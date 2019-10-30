@@ -1,0 +1,29 @@
+db:
+  driverName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://10.180.6.222:3306/cyx_information?useSSL=false
+  username: cyx
+  password: cyx_Pass1234
+
+table:
+  tableNames: tt_collect #生成的表名
+  tablePrefix: tt_ #生成的文件名称去除前缀
+
+output:
+  path: C:\Users\Administrator\Desktop\www #输出目录
+  author: houkaihua #注释作者
+  packageName: com.yonyou.cyx.information.service
+  defineChildPackage:
+    controller: controller
+    mapper: dao
+    service: service
+    serviceImpl: impl
+    dto: entity.dto
+    controllerTest: controller
+    mapperXml: mybatis.mapper
+    entity: entity.po
+  moduleName: collect #模块名称
+
+
+
+
+
