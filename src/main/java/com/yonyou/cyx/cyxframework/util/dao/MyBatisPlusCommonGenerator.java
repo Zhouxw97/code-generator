@@ -176,7 +176,10 @@ public class MyBatisPlusCommonGenerator {
         //table前缀
         String prefix = properties.getProperty("table.tablePrefix");
 
-        String[] prefixes = prefix.split(",");
+        String[] prefixes = null;
+        if(!StringUtils.isBlank(prefix)){
+            prefixes = prefix.split(",");
+        }
 
         mpg.setGlobalConfig(
                 // 全局配置
