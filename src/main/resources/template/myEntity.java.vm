@@ -108,7 +108,7 @@ private ${field.propertyType} ${field.propertyName};
     #if(${entityBuilderModel})
     public ${entity} ${setprefix}${field.capitalName}(${field.propertyType} ${field.propertyName}){
         #else
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    public void ${setprefix}${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #end
         this.${field.propertyName} = ${field.propertyName};
         #if(${entityBuilderModel})
