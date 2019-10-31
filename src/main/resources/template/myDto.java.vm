@@ -49,25 +49,23 @@ public class ${domainName}DTO extends CYXBaseDTO implements Serializable {
 ## ----------  END 字段循环遍历  ----------
 
     #foreach($field in ${table.fields})
-        #if(${field.propertyType.equals("boolean")})
-            #set($getprefix="is")
+        #if(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})
+            #set($getprefix="getIs")
+            #set($setprefix="setIs")
         #else
             #set($getprefix="get")
+            #set($setprefix="set")
             #if(${field.keyFlag})
                 #set($keyPropertyName=${field.propertyName})
             #end
         #end
 
-
-
-    public ${field.propertyType} ${getprefix}${field.capitalName}()
-
-    {
+    public ${field.propertyType} ${getprefix}${field.capitalName}(){
         return ${field.propertyName};
     }
 
 
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    public void  ${setprefix}${field.capitalName}(${field.propertyType} ${field.propertyName}) {
         this.${field.propertyName} = ${field.propertyName};
         #if(${entityBuilderModel})
             return this;

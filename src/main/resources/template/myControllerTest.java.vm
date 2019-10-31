@@ -48,7 +48,7 @@ public class ${table.controllerName}Test extends BaseTest {
     //日志对象
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String mockUrlPrefix = "/api#if(${cfg.moduleName})/${cfg.moduleName}#end/#if
+    private static final String mockUrlPrefix = "#if(!${cfg.moduleName} || ${cfg.moduleName}!="")/${cfg.moduleName}#end/#if
             (${controllerMappingHyphenStyle})
         ${controllerMappingHyphen}#else${controllerDomain}#end";
 
@@ -104,11 +104,16 @@ public class ${table.controllerName}Test extends BaseTest {
     public void insert() {
         ${domainName} ${camelDtoName} =new ${domainName}();
 
+        List<${domainName}> testDataList = getTestDataList();
+        ${camelDtoName} =  testDataList.get(0);
+
         //TODO 请补充字段值2
         #foreach($field in ${table.fields})
-        #if(!${field.keyIdentityFlag})
-        //${camelDtoName}.set${field.capitalName}("xxx");
-        #end
+            #if(!${field.keyIdentityFlag})
+                //${camelDtoName}.set${field.capitalName}("xxx");
+            #else
+                ${camelDtoName}.set${field.capitalName}(null);
+            #end
         #end
 
         String responseString = MockTestUtil.postUrlMock(mvc, mockUrlPrefix,${camelDtoName});
@@ -133,7 +138,9 @@ public class ${table.controllerName}Test extends BaseTest {
         #end
 
         List<${domainName}> testDataList = getTestDataList();
-        Map<String, Object> testData = testDataList.get(0).toMaps();
+        ${camelDtoName} =  testDataList.get(0);
+
+        Map<String, Object> testData = ${camelDtoName}.toMaps();
         Object ${keyPropertyName} = testData.get("${keyPropertyName}");
 
         String responseString = MockTestUtil.putUrlMock(mvc, mockUrlPrefix + "/" + ${keyPropertyName}.toString(),
@@ -196,7 +203,6 @@ public class ${table.controllerName}Test extends BaseTest {
         Assert.assertNotEquals("200", responsePage.getResultCode());
     }
 
-
     /**
      * 插入测试数据，如果测试数据不存在时
      *
@@ -228,6 +234,5 @@ public class ${table.controllerName}Test extends BaseTest {
                 });
         return responsePage.getData().getRecords();
     }
-
 
 }

@@ -93,10 +93,12 @@ private ${field.propertyType} ${field.propertyName};
 
 #if(!${entityLombokModel})
     #foreach($field in ${table.fields})
-        #if(${field.propertyType.equals("boolean")})
-            #set($getprefix="is")
+        #if(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})
+            #set($getprefix="getIs")
+            #set($setprefix="setIs")
         #else
             #set($getprefix="get")
+            #set($setprefix="set")
         #end
 
     public ${field.propertyType} ${getprefix}${field.capitalName}(){
@@ -104,7 +106,7 @@ private ${field.propertyType} ${field.propertyName};
     }
 
     #if(${entityBuilderModel})
-    public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}){
+    public ${entity} ${setprefix}${field.capitalName}(${field.propertyType} ${field.propertyName}){
         #else
     public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #end
@@ -169,6 +171,5 @@ private ${field.propertyType} ${field.propertyName};
     public <T extends BaseDTO> void transPoToDto(T dto){
         BeanMapperUtil.copyProperties(this,dto,"${keyPropertyName}");
     }
-
 
 }

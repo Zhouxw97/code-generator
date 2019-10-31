@@ -64,19 +64,18 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          * 分页查询对应数据
          *
          * @param page 分页对象
-         * @param queryCondition 查询条件
+         * @param ${camelDtoName} 查询条件
          * @return com.baomidou.mybatisplus.core.metadata.IPage<${cfg.packageDto}.${domainName}>
          * @author ${author}
          * @since 2018/7/22 0022
          */
         @Override
         @Transactional(readOnly=true)
-        public IPage<${domainName}>selectPageBysql(Page page,${domainName} queryCondition){
-        if (queryCondition == null) {
-        queryCondition = new ${domainName}();
+        public IPage<${domainName}>selectPageBysql(Page page,${domainName} ${camelDtoName}){
+        if(${camelDtoName} ==null){
+    ${camelDtoName} =new ${domainName}();
         }
-    ${entity} ${camelPOName} =new ${entity}();
-        queryCondition.transDtoToPo(${camelPOName});
+    ${entity} ${camelPOName} =${camelDtoName}.transDtoToPo(${entity}.class);
 
         List<${entity}>list= ${camelMapperName}.selectPageBySql(page,${camelPOName});
         if(CommonUtils.isNullOrEmpty(list)){
@@ -93,19 +92,18 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
         /**
          * 根据查询条件返回结果集
          *
-         * @param queryCondition 查询条件
+         * @param ${camelDtoName} 查询条件
          * @return java.util.List<${cfg.packageDto}.${domainName}>
          * @author ${author}
          * @since 2018/7/22 0022
          */
         @Override
         @Transactional(readOnly=true)
-        public List<${domainName}>selectListBySql(${domainName} queryCondition){
-        if (queryCondition == null) {
-        queryCondition = new ${domainName}();
+        public List<${domainName}>selectListBySql(${domainName} ${camelDtoName}){
+        if(${camelDtoName} ==null){
+    ${camelDtoName} =new ${domainName}();
         }
-    ${entity} ${camelPOName} =new ${entity}();
-        queryCondition.transDtoToPo(${camelPOName});
+    ${entity} ${camelPOName} =${camelDtoName}.transDtoToPo(${entity}.class);
         List<${entity}>list= ${camelMapperName}.selectListBySql(${camelPOName});
         if(CommonUtils.isNullOrEmpty(list)){
         return new ArrayList<>();

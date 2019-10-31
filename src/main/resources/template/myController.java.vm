@@ -50,7 +50,7 @@ import ${package.Entity}.${entity};
 #else
 @Controller
 #end
-@RequestMapping("#if(${cfg.moduleName})/${cfg.moduleName}#end/#if(${controllerMappingHyphenStyle})
+@RequestMapping("#if(!${cfg.moduleName} || ${cfg.moduleName}!="")/${cfg.moduleName}#end/#if(${controllerMappingHyphenStyle})
     ${controllerMappingHyphen}#else${controllerDomain}#end")
     #if(${superControllerClass})
             public class ${table.controllerName} extends ${superControllerClass} {
@@ -64,7 +64,11 @@ import ${package.Entity}.${entity};
         /**
          * 分页查询数据
          *
-         * @param queryCondition 查询条件
+    #foreach($field in ${table.fields})
+    * @param ${field.propertyName} ${field.comment}
+    #end
+         * @param currentPage 页数
+         * @param pageSize 分页大小
          * @return com.baomidou.mybatisplus.core.metadata.IPage 分页对象
          * @author ${author}
          * @since ${date}
@@ -74,10 +78,24 @@ import ${package.Entity}.${entity};
             @ResponseBody
     #end
         @GetMapping
-        public IPage<${domainName}>getList(@RequestParam(required = false) ${domainName} queryCondition, @RequestParam
-        ("currentPage")int currentPage, @RequestParam("pageSize")int pageSize){
+        public IPage<${domainName}>getByPage(
+#foreach($field in ${table.fields})
+@RequestParam(value="${field.propertyName}",required = false) ${field.propertyType} ${field.propertyName},
+#end
+        @RequestParam("currentPage")int currentPage,
+        @RequestParam("pageSize")int pageSize){
         Page<${entity}>page=new Page(currentPage,pageSize);
-        return ${controllerDomain}Service.selectPageBysql(page,queryCondition);
+
+        ${domainName} ${camelDtoName} =new ${domainName}();
+        #foreach($field in ${table.fields})
+            #if(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})
+                #set($setprefix="setIs")
+            #else
+                #set($setprefix="set")
+            #end
+            ${camelDtoName}.${setprefix}${field.capitalName}(${field.propertyName});
+        #end
+        return ${controllerDomain}Service.selectPageBysql(page,${camelDtoName});
         }
 
 /**
@@ -169,6 +187,5 @@ public boolean deleteById(@PathVariable("id") ${keyPropertyType} id){
             ${controllerDomain}Service.deleteBatchIds(ids);
                 return true;
                 }
-
 
 }
