@@ -6,7 +6,7 @@ db:
 
 table:
   tableNames: tt_collect #生成的表名
-  tablePrefix: tt_ #生成的文件名称去除前缀
+  tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀
 
 output:
   path: C:\Users\Administrator\Desktop\www #输出目录

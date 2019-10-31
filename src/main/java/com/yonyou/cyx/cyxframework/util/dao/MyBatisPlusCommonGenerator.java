@@ -91,10 +91,6 @@ public class MyBatisPlusCommonGenerator {
         String serviceImplPackage = properties.getProperty("output.defineChildPackage.serviceImpl");
         final String serviceImplPackageStatic = serviceImplPackage == null ? "impl" : serviceImplPackage;
 
-
-        String moduleNameDir = moduleName.replaceAll("\\.", "/");
-
-
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
@@ -104,16 +100,16 @@ public class MyBatisPlusCommonGenerator {
         //进行模板配置
         setTemplateConfig(mpg, properties);
 
+        String moduleName2 = StringUtils.isBlank(moduleName) ? "" : ("." + moduleName);
 
         // 包配置
         PackageConfig packageConfig = new PackageConfig().setParent(packageName);
-        packageConfig.setController(controllerPackage + "." + moduleName);
-        packageConfig.setEntity(entityPackage + "." + moduleName);
-        packageConfig.setService(servicePackageStatic + "." + moduleName);
-        packageConfig.setServiceImpl(servicePackageStatic + "." + moduleName + "." + serviceImplPackageStatic);
-        packageConfig.setMapper(mapperPackage + "." + moduleName);
+        packageConfig.setController(controllerPackage + moduleName2);
+        packageConfig.setEntity(entityPackage + moduleName2);
+        packageConfig.setService(servicePackageStatic + moduleName2);
+        packageConfig.setServiceImpl(servicePackageStatic + moduleName2 + "." + serviceImplPackageStatic);
+        packageConfig.setMapper(mapperPackage + moduleName2);
         mpg.setPackageInfo(packageConfig);
-
 
         String dtoPackage = properties.getProperty("output.defineChildPackage.dto");
         final String dtoPackageStatic = dtoPackage == null ? "bean.dto" : dtoPackage;
@@ -125,21 +121,19 @@ public class MyBatisPlusCommonGenerator {
             public void initMap() {
                 this.getConfig().getGlobalConfig().getEntityName();
                 Map<String, Object> map = new HashMap<>();
+
                 map.put("packageDto", packageName + (mpg.getPackageInfo().getModuleName()
                         == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
-                        + dtoPackageStatic + "." +
-                        moduleName);
-                map.put("moduleName", moduleNameDir);
-
+                        + dtoPackageStatic + moduleName2);
                 map.put("packageServiceImplTest", packageName + (mpg.getPackageInfo().getModuleName()
                         == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
-                        + servicePackageStatic + "." +
-                        moduleName);
+                        + servicePackageStatic + moduleName2);
+
+                map.put("moduleName", getModuleNameDir(moduleName));
 
                 this.setMap(map);
             }
         };
-
 
         List<FileOutConfig> fileOutConfigs = new ArrayList<>();
         //进行xml 生成配置
@@ -155,10 +149,8 @@ public class MyBatisPlusCommonGenerator {
 
         mpg.setCfg(injectionConfig);
 
-
         // 执行生成
         mpg.execute();
-
     }
 
 
@@ -183,6 +175,8 @@ public class MyBatisPlusCommonGenerator {
         String[] tables = properties.getProperty("table.tableNames").split(",");
         //table前缀
         String prefix = properties.getProperty("table.tablePrefix");
+
+        String[] prefixes = prefix.split(",");
 
         mpg.setGlobalConfig(
                 // 全局配置
@@ -215,7 +209,7 @@ public class MyBatisPlusCommonGenerator {
         mpg.setStrategy(
                 // 策略配置
                 new StrategyConfig()
-                        .setTablePrefix(prefix)// 此处可以修改为您的表前缀
+                        .setTablePrefix(prefixes)// 此处可以修改为您的表前缀
                         .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
                         .setInclude(tables) // 需要生成的表
                         .setRestControllerStyle(true)
@@ -309,7 +303,6 @@ public class MyBatisPlusCommonGenerator {
                 mapperXmlPackage;
 
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
-        String moduleNameDir = moduleName.replaceAll("\\.", "/");
         //文件路径
         String outputPath = properties.getProperty(OUTPUT_PATH);
         File file = new File(outputPath);
@@ -323,14 +316,10 @@ public class MyBatisPlusCommonGenerator {
              */
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return path + "/src/main/resources/" + mapperXmlPackageStatic.replaceAll("\\.", "/") + "/" +
-                        moduleNameDir
-                        + "/" + com.yonyou.cyx.function.utils
-                        .common.StringUtils.firstCharToLowerCase(tableInfo
-                                .getEntityName())
-                        +
-                        "Mapper" +
-                        ".xml";
+                return path + "/src/main/resources/" + mapperXmlPackageStatic.replaceAll("\\.", "/") + "/"
+                        + (StringUtils.isBlank(moduleName) ? "" : (getModuleNameDir(moduleName) + "/"))
+                        + com.yonyou.cyx.function.utils.common.StringUtils.firstCharToLowerCase(tableInfo.getEntityName())
+                        + "Mapper.xml";
             }
         };
 
@@ -355,7 +344,6 @@ public class MyBatisPlusCommonGenerator {
         final String dtoPackageStatic = dtoPackage == null ? "bean.dto" : dtoPackage;
 
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
-        String moduleNameDir = moduleName.replaceAll("\\.", "/");
         //文件路径
         String outputPath = properties.getProperty(OUTPUT_PATH);
         File file = new File(outputPath);
@@ -370,10 +358,9 @@ public class MyBatisPlusCommonGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path + "/src/main/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
-                        "/" + dtoPackageStatic.replaceAll("\\.", "/") + (moduleNameDir == null ? "" : "/" +
-                        moduleNameDir) + "/" + tableInfo
-                        .getEntityName().substring(0, tableInfo
-                                .getEntityName().length() - 2) + "DTO.java";
+                        "/" + dtoPackageStatic.replaceAll("\\.", "/")
+                        + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
+                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "DTO.java";
             }
         };
 
@@ -399,7 +386,6 @@ public class MyBatisPlusCommonGenerator {
                 controllerTestPackage;
 
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
-        String moduleNameDir = moduleName.replaceAll("\\.", "/");
         //文件路径
         String outputPath = properties.getProperty(OUTPUT_PATH);
         File file = new File(outputPath);
@@ -414,11 +400,9 @@ public class MyBatisPlusCommonGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path + "/src/test/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
-                        "/" + controllerTestPackageStatic.replaceAll("\\.", "/") + (moduleNameDir == null ? "" : "/"
-                        + moduleNameDir) + "/" +
-                        tableInfo
-                                .getControllerName
-                                        () + "Test.java";
+                        "/" + controllerTestPackageStatic.replaceAll("\\.", "/")
+                        + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName))
+                        + "/" + tableInfo.getControllerName() + "Test.java";
             }
         };
 
@@ -445,7 +429,6 @@ public class MyBatisPlusCommonGenerator {
                 serviceTestPackage;
 
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
-        String moduleNameDir = moduleName.replaceAll("\\.", "/");
         //文件路径
         String outputPath = properties.getProperty(OUTPUT_PATH);
         File file = new File(outputPath);
@@ -460,9 +443,9 @@ public class MyBatisPlusCommonGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path + "/src/test/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
-                        "/" + serviceTestPackageStatic.replaceAll("\\.", "/") + (moduleNameDir == null ? "" : "/" +
-                        moduleNameDir) + "/" +
-                        tableInfo.getServiceImplName() + "Test.java";
+                        "/" + serviceTestPackageStatic.replaceAll("\\.", "/")
+                        + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName))
+                        + "/" + tableInfo.getServiceImplName() + "Test.java";
             }
         };
 
@@ -472,5 +455,7 @@ public class MyBatisPlusCommonGenerator {
         }
     }
 
-
+    private static String getModuleNameDir(String moduleName) {
+        return StringUtils.isBlank(moduleName) ? "" : moduleName.replaceAll("\\.", "/");
+    }
 }
