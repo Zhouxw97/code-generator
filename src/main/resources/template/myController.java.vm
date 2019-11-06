@@ -99,7 +99,7 @@ import ${package.Entity}.${entity};
         }
 
 /**
- * 进行数据修改
+ * 根据ID获取数据
  *
  * @param id 数据主键ID
  * @return ${cfg.packageDto}.${domainName}
