@@ -1,12 +1,12 @@
 db:
   driverName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://10.180.6.111:3306/cyx_information?useSSL=false
+  url: jdbc:mysql://10.180.6.111:3306/cyx_cti?useSSL=false
   username: cyx
   password: cyx_Pass1234
 
 table:
-  tableNames: tt_collect #生成的表名
-  tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀
+  tableNames: tt_bind,tc_configurl #生成的表名,可配置多张表
+  tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀,可配置多个
 
 output:
   path: C:\Users\Administrator\Desktop\www #输出目录
@@ -21,7 +21,7 @@ output:
     controllerTest: controller
     mapperXml: mybatis.mapper
     entity: entity.po
-  moduleName:  #模块名称
+  moduleName:  #模块名称,可为空
 
 
 
