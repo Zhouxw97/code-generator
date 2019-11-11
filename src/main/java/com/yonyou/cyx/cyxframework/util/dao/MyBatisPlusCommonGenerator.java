@@ -177,7 +177,7 @@ public class MyBatisPlusCommonGenerator {
         String prefix = properties.getProperty("table.tablePrefix");
 
         String[] prefixes = null;
-        if(!StringUtils.isBlank(prefix)){
+        if (!StringUtils.isBlank(prefix)) {
             prefixes = prefix.split(",");
         }
 
@@ -321,7 +321,7 @@ public class MyBatisPlusCommonGenerator {
             public String outputFile(TableInfo tableInfo) {
                 return path + "/src/main/resources/" + mapperXmlPackageStatic.replaceAll("\\.", "/") + "/"
                         + (StringUtils.isBlank(moduleName) ? "" : (getModuleNameDir(moduleName) + "/"))
-                        + com.yonyou.cyx.function.utils.common.StringUtils.firstCharToLowerCase(tableInfo.getEntityName())
+                        + StringUtils.firstCharToLowerCase(tableInfo.getEntityName()).replace("PO", "")
                         + "Mapper.xml";
             }
         };
