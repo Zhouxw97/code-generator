@@ -140,6 +140,8 @@ public class MyBatisPlusCommonGenerator {
         setXmlOutPutConfig(properties, fileOutConfigs);
         //进行DTO 输出配置
         setDtoOutPutConfig(properties, fileOutConfigs, mpg);
+        //进行QueryDTO 输出配置
+        setQueryDtoOutPutConfig(properties, fileOutConfigs, mpg);
         //进行ControllerTest 输出配置
         setControllerTestConfig(properties, fileOutConfigs, mpg);
         //进行ServiceTest 输出配置
@@ -364,6 +366,47 @@ public class MyBatisPlusCommonGenerator {
                         "/" + dtoPackageStatic.replaceAll("\\.", "/")
                         + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
                         + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "DTO.java";
+            }
+        };
+
+        String isDtoGenerate = properties.getProperty("output.isGeneratePackage.dto");
+        if (StringUtils.isNullOrEmpty(isDtoGenerate) || isDtoGenerate.equals("true")) {
+            fileOutConfigs.add(dtoFileConfig);
+        }
+    }
+
+    /**
+     * 进行xml 文件输出配置
+     *
+     * @param properties
+     * @param fileOutConfigs
+     * @return void
+     * @author zhangxianchao
+     * @since 2018/10/8 0008
+     */
+    private static void setQueryDtoOutPutConfig(Properties properties, List<FileOutConfig> fileOutConfigs, AutoGenerator
+            mpg) {
+        String dtoPackage = properties.getProperty("output.defineChildPackage.dto");
+        final String dtoPackageStatic = dtoPackage == null ? "bean.dto" : dtoPackage;
+
+        String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
+        //文件路径
+        String outputPath = properties.getProperty(OUTPUT_PATH);
+        File file = new File(outputPath);
+        String path = file.getAbsolutePath();
+
+        FileOutConfig dtoFileConfig = new FileOutConfig("/template/myQueryDto" + JAVA_VM_SUFFIX) {
+            /**
+             * 输出文件
+             *
+             * @param tableInfo
+             */
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path + "/src/main/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
+                        "/" + dtoPackageStatic.replaceAll("\\.", "/")
+                        + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
+                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "QueryDTO.java";
             }
         };
 

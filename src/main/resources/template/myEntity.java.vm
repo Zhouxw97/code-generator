@@ -75,10 +75,7 @@ public class ${entity} implements Serializable{
     #else
     @TableField("${field.name}")
 #end
-## 乐观锁注解
-    #if(${versionFieldName}==${field.name})
-    @Version
-    #end
+
 ## 逻辑删除注解
     #if(${logicDeleteFieldName}==${field.name})
     @TableLogic

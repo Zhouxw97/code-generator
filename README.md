@@ -8,6 +8,8 @@
     + 接口出入参数禁止使用Map
     + 生成的文件名称可以去除多种前缀
     + 模块名称可以为空
+    + swagger注解
+    + 参数验证注解
     
 - 注意
     + 表中字段 is_deleted 要求是 int(1)。（`tinyint 会导致 isDeleted 是Boolean类型`）

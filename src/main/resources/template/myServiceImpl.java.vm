@@ -1,5 +1,4 @@
 package ${package.ServiceImpl};
-
     #set($domainName=$!{entity})
     #set($end= $domainName.length() - 2)
     #set($domainName=$domainName.substring(0,$end)+"DTO")
@@ -11,7 +10,7 @@ import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import ${superServiceImplClassPackage};
 import ${cfg.packageDto}.${domainName};
-import com.yonyou.cyx.function.exception.DALException;
+import com.yonyou.cyx.function.exception.ServiceBizException;
 import com.yonyou.cyx.function.utils.common.StringUtils;
 import com.yonyou.cyx.function.utils.common.CommonUtils;
 import org.slf4j.Logger;
@@ -65,7 +64,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          *
          * @param page 分页对象
          * @param ${camelDtoName} 查询条件
-         * @return com.baomidou.mybatisplus.core.metadata.IPage<${cfg.packageDto}.${domainName}>
+         * @return com.baomidou.mybatisplus.core.metadata.IPage
          * @author ${author}
          * @since 2018/7/22 0022
          */
@@ -80,13 +79,11 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
         List<${entity}>list= ${camelMapperName}.selectPageBySql(page,${camelPOName});
         if(CommonUtils.isNullOrEmpty(list)){
         page.setRecords(new ArrayList<>());
-        return page;
         }else{
         List<${domainName}>result=list.stream().map(m->m.transPoToDto(${domainName}.class)).collect(Collectors.toList());
-
         page.setRecords(result);
-        return page;
         }
+        return page;
         }
 
         /**
@@ -127,7 +124,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
         if(${camelPOName}!=null){
         return ${camelPOName}.transPoToDto(${domainName}.class);
         }else{
-        throw new DALException("查询失败,没有符合条件的数据");
+        throw new ServiceBizException("查询失败,没有符合条件的数据");
         }
         }
 
@@ -179,9 +176,9 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
         @Override
         public int deleteById(${keyPropertyType} id){
         int deleteCount= ${camelMapperName}.deleteById(id);
-        logger.debug("删除数量：{}",deleteCount);
+        logger.debug("删除数量：{}" ,deleteCount);
         if(deleteCount<=0){
-        throw new DALException("删除失败,没有符合条件的数据");
+        throw new ServiceBizException("删除失败,没有符合条件的数据");
         }else{
         return deleteCount;
         }
@@ -197,11 +194,11 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          */
         @Override
         public int deleteBatchIds(String ids){
-        List<${keyPropertyType}>longList=StringUtils.convertStrToArray(ids,",", ${keyPropertyType}.class);
+        List<${keyPropertyType}>longList=StringUtils.convertStrToArray(ids,"," , ${keyPropertyType}.class);
         int deleteCount= ${camelMapperName}.deleteBatchIds(longList);
-        logger.debug("删除数量：{}",deleteCount);
+        logger.debug("删除数量：{}" ,deleteCount);
         if(deleteCount!=longList.size()){
-        throw new DALException("删除失败,没有符合条件的数据");
+        throw new ServiceBizException("删除失败,没有符合条件的数据");
         }else{
         return deleteCount;
         }

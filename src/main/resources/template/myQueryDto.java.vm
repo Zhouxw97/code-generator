@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
     #set($end = $domainName.length() - 2)
     #set($domainName=$domainName.substring(0,$end))
 
-public class ${domainName}DTO extends CYXBaseDTO implements Serializable {
+public class ${domainName}QueryDTO extends CYXBaseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
 ## ----------  BEGIN 字段循环遍历  ----------
@@ -47,7 +47,7 @@ public class ${domainName}DTO extends CYXBaseDTO implements Serializable {
         #end
     #end
 
-    public ${domainName}DTO() {
+    public ${domainName}QueryDTO() {
         super();
     }
 ## ----------  END 字段循环遍历  ----------
@@ -79,7 +79,7 @@ public class ${domainName}DTO extends CYXBaseDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "${domainName}DTO{" +
+        return "${domainName}QueryDTO{" +
             #foreach($field in ${table.fields})
                 #if($!{velocityCount}==1)
                 "${field.propertyName}=" + ${field.propertyName} +
