@@ -30,6 +30,8 @@ import ${cfg.packageDto}.${domainQueryName};
 import ${package.Entity}.${entity};
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 #set($domainName=$!{entity})
 #set($end = $domainName.length() - 2)
@@ -116,7 +118,7 @@ import javax.validation.Valid;
     @ResponseBody
     #end
 @GetMapping(value = "/{id}")
-public ${domainName} getById(@PathVariable("id") ${keyPropertyType} id){
+public ${domainName} getById(@PathVariable("id") @NotNull(message = "id不能为空") ${keyPropertyType} id){
         return ${controllerDomain}Service.getById(id);
         }
 
@@ -158,7 +160,8 @@ public int insert(@Valid @RequestBody ${domainName} ${camelDtoName}){
     @ResponseBody
     #end
 @PutMapping(value = "/{id}")
-public int update(@Valid @RequestBody ${domainName} ${camelDtoName}, @PathVariable("id") ${keyPropertyType} id){
+public int update(@Valid @RequestBody ${domainName} ${camelDtoName},
+@PathVariable("id") @NotNull(message = "id不能为空") ${keyPropertyType} id){
         return ${controllerDomain}Service.update(id,${camelDtoName});
         }
 
@@ -176,7 +179,7 @@ public int update(@Valid @RequestBody ${domainName} ${camelDtoName}, @PathVariab
     @ResponseBody
     #end
 @DeleteMapping(value = "/{id}")
-public int deleteById(@PathVariable("id") ${keyPropertyType} id){
+public int deleteById(@PathVariable("id") @NotNull(message = "id不能为空") ${keyPropertyType} id){
         return ${controllerDomain}Service.deleteById(id);
         }
 
@@ -194,7 +197,7 @@ public int deleteById(@PathVariable("id") ${keyPropertyType} id){
     @ResponseBody
     #end
 @DeleteMapping(value = "/batch/{ids}")
-public int deleteByIds(@PathVariable("ids") String ids){
+public int deleteByIds(@PathVariable("ids") @NotBlank(message = "ids不能为空") String ids){
         return ${controllerDomain}Service.deleteBatchIds(ids);
         }
 
