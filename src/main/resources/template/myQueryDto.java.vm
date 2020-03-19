@@ -79,15 +79,17 @@ public class ${domainName}QueryDTO extends CYXBaseDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "${domainName}QueryDTO{" +
+        StringBuilder sb = new StringBuilder();
+        sb.append("${domainName}QueryDTO{")
             #foreach($field in ${table.fields})
                 #if($!{velocityCount}==1)
-                "${field.propertyName}=" + ${field.propertyName} +
+                        .append("${field.propertyName}=").append(${field.propertyName})
                 #else
-                ", ${field.propertyName}=" + ${field.propertyName} +
+                        .append(", ${field.propertyName}=").append(${field.propertyName})
                 #end
             #end
-        "}";
+                .append("}");
+        return sb.toString();
     }
 
     /**

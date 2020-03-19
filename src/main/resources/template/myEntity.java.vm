@@ -55,12 +55,12 @@ public class ${entity} implements Serializable{
     ## 主键
 #if(${field.keyIdentityFlag})
     #if(${field.propertyType}=="String")
-    @TableId(value = "${field.name}", type = IdType.INPUT)
+    @TableId(value = "${field.name}")
     #else
-    @TableId(value = "${field.name}", type = IdType.AUTO)
+    @TableId(value = "${field.name}")
     #end
     #elseif(!$null.isNull(${idType}) && "$!idType" != "")
-    @TableId(value = "${field.name}", type = IdType.${idType})
+    @TableId(value = "${field.name}")
     #elseif(${field.convert})
     @TableId("${field.name}")
 #end
@@ -75,7 +75,6 @@ public class ${entity} implements Serializable{
     #else
     @TableField("${field.name}")
 #end
-
 ## 逻辑删除注解
     #if(${logicDeleteFieldName}==${field.name})
     @TableLogic
@@ -135,15 +134,17 @@ private ${field.propertyType} ${field.propertyName};
 #if(!${entityLombokModel})
 @Override
     public String toString(){
-        return"${entity}{" +
+        StringBuilder sb = new StringBuilder();
+        sb.append("${entity}{")
     #foreach($field in ${table.fields})
         #if($!{velocityCount}==1)
-                "${field.propertyName}=" + ${field.propertyName} +
+                .append("${field.propertyName}=").append(${field.propertyName})
         #else
-                ", ${field.propertyName}=" + ${field.propertyName} +
+                .append(", ${field.propertyName}=").append(${field.propertyName})
         #end
     #end
-        "}";
+        .append("}");
+        return sb.toString();
     }
 #end
 

@@ -69,7 +69,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          * @since 2018/7/22 0022
          */
         @Override
-        @Transactional(readOnly=true)
+        @Transactional(readOnly=true, rollbackFor = Exception.class)
         public IPage<${domainName}>selectPageBysql(Page page,${domainName} ${camelDtoName}){
         if(${camelDtoName} ==null){
     ${camelDtoName} =new ${domainName}();
@@ -95,7 +95,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          * @since 2018/7/22 0022
          */
         @Override
-        @Transactional(readOnly=true)
+        @Transactional(readOnly=true, rollbackFor = Exception.class)
         public List<${domainName}>selectListBySql(${domainName} ${camelDtoName}){
         if(${camelDtoName} ==null){
     ${camelDtoName} =new ${domainName}();
@@ -118,7 +118,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
          * @since 2018/7/22 0022
          */
         @Override
-        @Transactional(readOnly=true)
+        @Transactional(readOnly=true, rollbackFor = Exception.class)
         public ${domainName} getById(${keyPropertyType} id){
     ${entity} ${camelPOName} = ${camelMapperName}.selectById(id);
         if(${camelPOName}!=null){
