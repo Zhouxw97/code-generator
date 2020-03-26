@@ -212,7 +212,7 @@ public class MyBatisPlusCommonGenerator {
                 tables = tbList.toArray(new String[tbList.size()]);
             } catch (Exception e) {
                 logger.error("获取表名列表失败", e);
-                tables = properties.getProperty("table.tableNames").split(",");
+                tables = null;
             }
         } else {
             tables = properties.getProperty("table.tableNames").split(",");
