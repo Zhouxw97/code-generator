@@ -5,11 +5,11 @@ db:
   password: cyx_Pass1234
 
 table:
-  tableNames: tm_activity,tm_activity_model #生成的表名,可配置多张表
+  tableNames:  #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
   tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀,可配置多个
 
 output:
-  path: C:\Users\Administrator\Desktop\www #输出目录
+  path: C:\Users\Administrator\Desktop\www\information-service #输出目录
   author: houkaihua #注释作者
   packageName: com.yonyou.cyx.information.service
   defineChildPackage:

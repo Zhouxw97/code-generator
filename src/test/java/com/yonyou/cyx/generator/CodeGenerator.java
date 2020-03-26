@@ -28,7 +28,7 @@ public class CodeGenerator {
         Properties properties = YamlUtils.yaml2Properties("generator.yaml");
         String outputPath = properties.getProperty("output.path") + "/src";
 
-        //格式化代码生成路径中.java文件
+        //格式化代码生成路径中的文件
         CodeFormater codeFormater = new CodeFormater();
         List<String> fileList = FileUtil.getFileList(outputPath, new ArrayList<>());
         if (!CommonUtils.isNullOrEmpty(fileList)) {

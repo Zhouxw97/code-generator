@@ -23,8 +23,11 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.yonyou.cyx.function.utils.common.StringUtils;
 import com.yonyou.cyx.function.utils.resource.YamlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -53,6 +56,8 @@ import java.util.*;
  * @Date : Create in 2017/9/19 14:48
  */
 public class MyBatisPlusCommonGenerator {
+
+    private static final Logger logger = LoggerFactory.getLogger(MyBatisPlusCommonGenerator.class);
 
     private static final String JAVA_VM_SUFFIX = ".java.vm";
     private static final String OUTPUT_MODULE_NAME = "output.moduleName";
@@ -173,8 +178,46 @@ public class MyBatisPlusCommonGenerator {
         String path = file.getAbsolutePath();
         //作者
         String authorName = properties.getProperty("output.author");
+
+        mpg.setDataSource(
+                // 数据源配置
+                new DataSourceConfig()
+                        // 数据库类型
+                        .setDbType(DbType.MYSQL)
+                        .setDriverName(properties.getProperty("db.driverName"))
+                        .setUsername(properties.getProperty("db.username"))
+                        .setPassword(properties.getProperty("db.password"))
+                        .setUrl(properties.getProperty("db.url"))
+        );
+
+        String tableNames = properties.getProperty("table.tableNames");
+
         //table名字
-        String[] tables = properties.getProperty("table.tableNames").split(",");
+        String[] tables;
+        if (StringUtils.isBlank(tableNames)) {
+            try {
+                DataSourceConfig dataSourceConfig = mpg.getDataSource();
+
+                Class.forName(dataSourceConfig.getDriverName());
+                Connection conn = DriverManager.getConnection(dataSourceConfig.getUrl(), dataSourceConfig.getUsername(), dataSourceConfig.getPassword());
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT table_name FROM information_schema.`TABLES` WHERE table_schema = (SELECT DATABASE());");
+
+                List<String> tbList = new ArrayList<>();
+                while (rs.next()) {
+                    String tb = rs.getString(1);
+                    tbList.add(tb);
+                }
+
+                tables = tbList.toArray(new String[tbList.size()]);
+            } catch (Exception e) {
+                logger.error("获取表名列表失败", e);
+                tables = properties.getProperty("table.tableNames").split(",");
+            }
+        } else {
+            tables = properties.getProperty("table.tableNames").split(",");
+        }
+
         //table前缀
         String prefix = properties.getProperty("table.tablePrefix");
 
@@ -186,13 +229,20 @@ public class MyBatisPlusCommonGenerator {
         mpg.setGlobalConfig(
                 // 全局配置
                 new GlobalConfig()
-                        .setOutputDir(path + "/src/main/java")//输出目录
-                        .setFileOverride(true)// 是否覆盖文件
-                        .setActiveRecord(true)// 开启 activeRecord 模式
-                        .setEnableCache(false)// XML 二级缓存
-                        .setBaseResultMap(true)// XML ResultMap
-                        .setBaseColumnList(true)// XML columList
-                        .setOpen(false)//生成后打开文件夹
+                        //输出目录
+                        .setOutputDir(path + "/src/main/java")
+                        // 是否覆盖文件
+                        .setFileOverride(true)
+                        // 开启 activeRecord 模式
+                        .setActiveRecord(true)
+                        // XML 二级缓存
+                        .setEnableCache(false)
+                        // XML ResultMap
+                        .setBaseResultMap(true)
+                        // XML columList
+                        .setBaseColumnList(true)
+                        //生成后打开文件夹
+                        .setOpen(false)
                         .setAuthor(authorName)
                         // 自定义文件命名，注意 %s 会自动填充表实体属性！
                         .setMapperName("%sMapper")
@@ -202,21 +252,16 @@ public class MyBatisPlusCommonGenerator {
                         .setServiceImplName("%sServiceImpl")
                         .setControllerName("%sController")
         );
-        mpg.setDataSource(
-                // 数据源配置
-                new DataSourceConfig()
-                        .setDbType(DbType.MYSQL)// 数据库类型
-                        .setDriverName(properties.getProperty("db.driverName"))
-                        .setUsername(properties.getProperty("db.username"))
-                        .setPassword(properties.getProperty("db.password"))
-                        .setUrl(properties.getProperty("db.url"))
-        );
+
         mpg.setStrategy(
                 // 策略配置
                 new StrategyConfig()
-                        .setTablePrefix(prefixes)// 此处可以修改为您的表前缀
-                        .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                        .setInclude(tables) // 需要生成的表
+                        // 此处可以修改为您的表前缀
+                        .setTablePrefix(prefixes)
+                        // 表名生成策略
+                        .setNaming(NamingStrategy.underline_to_camel)
+                        // 需要生成的表
+                        .setInclude(tables)
                         .setRestControllerStyle(true)
                         //.setExclude(new String[]{"test"}) // 排除生成的表
                         // 自定义实体父类
