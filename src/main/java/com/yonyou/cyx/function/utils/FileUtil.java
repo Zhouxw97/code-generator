@@ -22,7 +22,7 @@ public class FileUtil {
                     getFileList(files[i].getAbsolutePath(), fileList);
                 } else {
                     String strFileName = files[i].getAbsolutePath();
-                    if (strFileName.endsWith(".java") || strFileName.endsWith(".xml")) {
+                    if (strFileName.endsWith(".java") || strFileName.endsWith("Mapper.xml")) {
                         System.out.println("---" + strFileName);
                         fileList.add(strFileName);
                     }
