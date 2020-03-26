@@ -54,7 +54,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 #else
         @Transactional(rollbackFor=Exception.class)
         public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>implements ${table.serviceName} {
-        //日志对象
+
         private final Logger logger=LoggerFactory.getLogger(this.getClass());
         @Resource
     ${table.mapperName} ${camelMapperName};

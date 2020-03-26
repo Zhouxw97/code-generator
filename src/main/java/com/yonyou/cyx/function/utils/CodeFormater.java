@@ -1,5 +1,8 @@
 package com.yonyou.cyx.function.utils;
 
+import org.dom4j.DocumentHelper;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
@@ -76,28 +79,37 @@ public class CodeFormater {
             in = null;
             String contents = sb.toString();
 
-            IDocument doc = new Document(contents);
-            // create delta
-            TextEdit edit = codeFormatter.format(
-                    // format a compilation unit
-                    CodeFormatter.K_COMPILATION_UNIT,
-                    // source to format
-                    contents,
-                    // starting position
-                    0,
-                    // length
-                    contents.length(),
-                    // initial indentation
-                    0,
-                    // line separator
-                    lineSeparator);
+            String output = contents;
 
-            // apply changes to content
-            edit.apply(doc);
+            if (sourceFileName.endsWith(".java")) {
+                IDocument doc = new Document(contents);
+                // create delta
+                TextEdit edit = codeFormatter.format(
+                        // format a compilation unit
+                        CodeFormatter.K_COMPILATION_UNIT,
+                        // source to format
+                        contents,
+                        // starting position
+                        0,
+                        // length
+                        contents.length(),
+                        // initial indentation
+                        0,
+                        // line separator
+                        lineSeparator);
+
+                // apply changes to content
+                edit.apply(doc);
+
+                output = doc.get();
+            }
+//            else if (sourceFileName.endsWith(".xml")) {
+//                output = getXmlFormatStr(contents);
+//            }
 
             // output
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), fileEncoding));
-            String output = doc.get();
+
             out.write(output);
             out.flush();
         } catch (Exception e) {
@@ -116,4 +128,26 @@ public class CodeFormater {
         }
     }
 
+
+    private String getXmlFormatStr(String str) {
+        // 创建String输出流
+        StringWriter out = new StringWriter();
+        try {
+            // 将字符串格式转换成document对象
+            org.dom4j.Document document = DocumentHelper.parseText(str);
+
+            // 注意,用这种方式来创建指定格式的format
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            format.setIndentSize(4);
+            // 包装String流
+            XMLWriter writer = new XMLWriter(out, format);
+
+            // 将当前的document对象写入底层流out中
+            writer.write(document);
+            writer.close();
+        } catch (Exception e) {
+            logger.error("format xml exception:", e);
+        }
+        return out.toString();
+    }
 }
