@@ -39,9 +39,7 @@ import javax.annotation.Resource;
     #end
 #end
 /**
- * <p>
  * $!{table.comment} 服务实现类
- * </p>
  *
  * @author ${author}
  * @since ${date}

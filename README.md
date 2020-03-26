@@ -11,6 +11,7 @@
     + swagger注解
     + 参数验证注解
     + 生成的java文件格式化
+    + 生成的xml文件格式化
     
 - 注意
     + 表中字段 is_deleted 要求是 int(1)。（`tinyint 会导致 isDeleted 是Boolean类型`）

@@ -14,9 +14,7 @@ import ${cfg.packageDto}.${domainName};
     #end
 #end
 /**
- * <p>
  * $!{table.comment} 服务类
- * </p>
  *
  * @author ${author}
  * @since ${date}

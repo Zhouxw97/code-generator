@@ -40,7 +40,7 @@ import ${cfg.packageDto}.${domainName};
 #end
 
 /**
- * 对${table.controllerName}Test 进行测试2
+ * 对${table.controllerName} 进行测试
  * @author ${author}
  * @since ${date}
  */

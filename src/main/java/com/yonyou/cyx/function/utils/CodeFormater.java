@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
@@ -25,6 +26,7 @@ public class CodeFormater {
 
     private static final Logger logger = LoggerFactory.getLogger(CodeFormater.class);
 
+    private String lineSeparator;
     private String fileEncoding;
 
     private Map options;
@@ -34,6 +36,7 @@ public class CodeFormater {
     public CodeFormater(String fileEncoding) {
         init();
         this.fileEncoding = fileEncoding;
+        this.lineSeparator =  System.getProperty("line.separator");
     }
 
     public CodeFormater() {
@@ -42,6 +45,7 @@ public class CodeFormater {
 
     private void init() {
         fileEncoding = "UTF-8";
+        lineSeparator =  System.getProperty("line.separator");
         options = DefaultCodeFormatterConstants.getEclipseDefaultSettings();
 
         // initialize the compiler settings to be able to format 1.6 code
@@ -60,20 +64,23 @@ public class CodeFormater {
         codeFormatter = ToolFactory.createCodeFormatter(options);
     }
 
+    /**
+     * 文件格式化
+     *
+     * @param sourceFileName
+     */
     public void formatFile(String sourceFileName) {
-        File file = new File(sourceFileName);
         BufferedReader in = null;
         BufferedWriter out = null;
-        String line;
-        String lineSeparator = System.getProperty("line.separator");
         try {
+            File file = new File(sourceFileName);
+
+            String line;
             // retrieve the source
             in = new BufferedReader(new InputStreamReader(new FileInputStream(file), fileEncoding));
             StringBuffer sb = new StringBuffer();
-            ;
             while ((line = in.readLine()) != null) {
-                sb.append(line);
-                sb.append(lineSeparator);
+                sb.append(line).append(lineSeparator);
             }
             in.close();
             in = null;
@@ -82,34 +89,13 @@ public class CodeFormater {
             String output = contents;
 
             if (sourceFileName.endsWith(".java")) {
-                IDocument doc = new Document(contents);
-                // create delta
-                TextEdit edit = codeFormatter.format(
-                        // format a compilation unit
-                        CodeFormatter.K_COMPILATION_UNIT,
-                        // source to format
-                        contents,
-                        // starting position
-                        0,
-                        // length
-                        contents.length(),
-                        // initial indentation
-                        0,
-                        // line separator
-                        lineSeparator);
-
-                // apply changes to content
-                edit.apply(doc);
-
-                output = doc.get();
+                output = getJavaFormatStr(contents);
+            } else if (sourceFileName.endsWith(".xml")) {
+                output = getXmlFormatStr(contents);
             }
-//            else if (sourceFileName.endsWith(".xml")) {
-//                output = getXmlFormatStr(contents);
-//            }
 
             // output
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), fileEncoding));
-
             out.write(output);
             out.flush();
         } catch (Exception e) {
@@ -128,13 +114,51 @@ public class CodeFormater {
         }
     }
 
+    /**
+     * java文件 格式化
+     *
+     * @param contents
+     * @return
+     */
+    private String getJavaFormatStr(String contents) {
+        try {
+            IDocument doc = new Document(contents);
+            // create delta
+            TextEdit edit = codeFormatter.format(
+                    // format a compilation unit
+                    CodeFormatter.K_COMPILATION_UNIT,
+                    // source to format
+                    contents,
+                    // starting position
+                    0,
+                    // length
+                    contents.length(),
+                    // initial indentation
+                    0,
+                    // line separator
+                    lineSeparator);
 
-    private String getXmlFormatStr(String str) {
+            // apply changes to content
+            edit.apply(doc);
+            return doc.get();
+        } catch (BadLocationException e) {
+            logger.error("format java exception:", e);
+            return contents;
+        }
+    }
+
+    /**
+     * xml文件 格式化
+     *
+     * @param contents
+     * @return
+     */
+    private String getXmlFormatStr(String contents) {
         // 创建String输出流
         StringWriter out = new StringWriter();
         try {
             // 将字符串格式转换成document对象
-            org.dom4j.Document document = DocumentHelper.parseText(str);
+            org.dom4j.Document document = DocumentHelper.parseText(contents);
 
             // 注意,用这种方式来创建指定格式的format
             OutputFormat format = OutputFormat.createPrettyPrint();
@@ -145,9 +169,11 @@ public class CodeFormater {
             // 将当前的document对象写入底层流out中
             writer.write(document);
             writer.close();
+
+            return out.toString();
         } catch (Exception e) {
             logger.error("format xml exception:", e);
+            return contents;
         }
-        return out.toString();
     }
 }

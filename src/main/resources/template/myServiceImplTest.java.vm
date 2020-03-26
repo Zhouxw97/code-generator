@@ -30,9 +30,7 @@ import java.util.List;
     #end
 #end
 /**
- * <p>
- * $!{table.comment} 服务实现类
- * </p>
+ * 对 $!{table.comment} 服务实现类 进行测试
  *
  * @author ${author}
  * @since ${date}
