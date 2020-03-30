@@ -21,11 +21,12 @@ import java.util.Properties;
  */
 public class CodeGenerator {
     public static void main(String[] args) {
-        //代码生成
-        MyBatisPlusGenerator.generate();
-
         //获取代码生成路径
         Properties properties = YamlUtils.yaml2Properties("generator.yaml");
+
+        //代码生成
+        MyBatisPlusGenerator.generate(properties);
+
         String outputPath = properties.getProperty("output.path") + "/src";
 
         //格式化代码生成路径中的文件

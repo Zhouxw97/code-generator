@@ -5,7 +5,7 @@ db:
   password: cyx_Pass1234
 
 table:
-  tableNames:  #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
+  tableNames: tt_share #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
   tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀,可配置多个
 
 output:
@@ -22,6 +22,13 @@ output:
     mapperXml: mybatis.mapper
     entity: entity.po
   moduleName:  #模块名称,可为空
+  superControllerClass: com.yonyou.cyx.framework.controller.base.BaseController
+  superEntityClass: com.yonyou.cyx.cyxframework.bean.entity.base.CYXBasePO
+  superDtoClass: com.yonyou.cyx.cyxframework.bean.dto.base.CYXBaseDTO
+  superMapperClass: com.yonyou.cyx.framework.dao.base.IMapper
+  logicDeleteFieldName: IS_DELETED
+  versionFieldName: RECORD_VERSION
+  superEntityColumns: CREATED_BY,CREATED_TIME,UPDATED_BY,UPDATED_TIME,RECORD_VERSION,created_by,created_time,updated_by,updated_time,record_version
 
 
 

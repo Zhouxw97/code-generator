@@ -73,11 +73,7 @@ public class MyBatisPlusCommonGenerator {
      * @author zhangxianchao
      * @since 2018/7/28 0028
      */
-    public static void generate(MyBatisPlusCustomConfig customConfig) {
-        //加载生成配置文件
-        Properties properties = YamlUtils.yaml2Properties("generator.yaml");
-
-
+    public static void generate(MyBatisPlusCustomConfig customConfig, Properties properties) {
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
         String packageName = properties.getProperty("output.packageName");
         String controllerPackage = properties.getProperty("output.defineChildPackage.controller");
@@ -90,11 +86,12 @@ public class MyBatisPlusCommonGenerator {
         entityPackage = entityPackage == null ? "bean.entity" : entityPackage;
 
         String servicePackage = properties.getProperty("output.defineChildPackage.service");
-        final String servicePackageStatic = servicePackage == null ? "service" : servicePackage;
-
+        String servicePackageStatic = servicePackage == null ? "service" : servicePackage;
 
         String serviceImplPackage = properties.getProperty("output.defineChildPackage.serviceImpl");
-        final String serviceImplPackageStatic = serviceImplPackage == null ? "impl" : serviceImplPackage;
+        String serviceImplPackageStatic = serviceImplPackage == null ? "impl" : serviceImplPackage;
+
+        String superDtoClass = properties.getProperty("output.superDtoClass");
 
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
@@ -134,7 +131,7 @@ public class MyBatisPlusCommonGenerator {
                         == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
                         + servicePackageStatic + moduleName2);
 
-                map.put("moduleName", getModuleNameDir(moduleName));
+                map.put("superDtoClass", superDtoClass);
 
                 this.setMap(map);
             }

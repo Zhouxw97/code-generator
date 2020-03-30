@@ -15,6 +15,8 @@
  */
 package com.yonyou.cyx.cyxframework.util.dao;
 
+import java.util.Properties;
+
 /**
  * code is far away from bug with the animal protecting
  *
@@ -35,20 +37,27 @@ public class MyBatisPlusGenerator {
      * @author zhangxianchao
      * @since 2018/7/28 0028
      */
-    public static void generate() {
+    public static void generate(Properties properties) {
+        String superEntityClass = properties.getProperty("output.superEntityClass");
+        String superMapperClass = properties.getProperty("output.superMapperClass");
+        String superControllerClass = properties.getProperty("output.superControllerClass");
+        String logicDeleteFieldName = properties.getProperty("output.logicDeleteFieldName");
+        String versionFieldName = properties.getProperty("output.versionFieldName");
+        String superEntityColumns = properties.getProperty("output.superEntityColumns");
+
+        String[] columns = superEntityColumns.split(",");
+
         MyBatisPlusCustomConfig config = new MyBatisPlusCustomConfig();
-        config.setSuperEntityColumns("CREATED_BY", "CREATED_TIME", "UPDATED_BY",
-                "UPDATED_TIME", "RECORD_VERSION", "created_by", "created_time", "updated_by",
-                "updated_time", "record_version" );
-        config.setSuperEntityClass("com.yonyou.cyx.cyxframework.bean.entity.base.CYXBasePO");
+        config.setSuperEntityColumns(columns);
+        config.setSuperEntityClass(superEntityClass);
         // 自定义 mapper 父类
-        config.setSuperMapperClass("com.yonyou.cyx.framework.dao.base.IMapper");
+        config.setSuperMapperClass(superMapperClass);
         // 自定义 controller 父类
-        config.setSuperControllerClass("com.yonyou.cyx.framework.controller.base.BaseController");
+        config.setSuperControllerClass(superControllerClass);
         config.setEntityBooleanColumnRemoveIsPrefix(false);
-        config.setLogicDeleteFieldName("IS_DELETED");
-        config.setVersionFieldName("RECORD_VERSION" );
+        config.setLogicDeleteFieldName(logicDeleteFieldName);
+        config.setVersionFieldName(versionFieldName);
         //执行代码生成
-        MyBatisPlusCommonGenerator.generate(config);
+        MyBatisPlusCommonGenerator.generate(config, properties);
     }
 }

@@ -2,7 +2,7 @@ package ${cfg.packageDto};
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.yonyou.cyx.cyxframework.bean.dto.base.CYXBaseDTO;
+import ${cfg.superDtoClass};
 import com.yonyou.cyx.framework.bean.entity.base.BasePO;
 import com.yonyou.cyx.function.utils.bean.BeanMapperUtil;
 import com.yonyou.cyx.function.utils.jsonserializer.localdatetime.JsonLocalDateTimeDeserializer;
@@ -23,7 +23,12 @@ import java.time.LocalDateTime;
     #set($end = $domainName.length() - 2)
     #set($domainName=$domainName.substring(0,$end))
 
-public class ${domainName}QueryDTO extends CYXBaseDTO implements Serializable {
+    #set($superDtoClass=$cfg.superDtoClass)
+    #set($dtoBegin=$superDtoClass.lastIndexOf('.')+1)
+    #set($dtoEnd=$superDtoClass.length())
+    #set($baseDto=$superDtoClass.substring($dtoBegin,$dtoEnd))
+
+public class ${domainName}QueryDTO extends ${baseDto} implements Serializable {
     private static final long serialVersionUID = 1L;
 
 ## ----------  BEGIN 字段循环遍历  ----------
