@@ -62,8 +62,7 @@ import javax.validation.constraints.NotNull;
     #else
     @Controller
     #end
-@RequestMapping("#if(!${cfg.moduleName} || ${cfg.moduleName}!=
-    "")/${cfg.moduleName}#end/#if(${controllerMappingHyphenStyle})
+@RequestMapping("#if(${cfg.moduleName})/${cfg.moduleName}#end/#if(${controllerMappingHyphenStyle})
     ${controllerMappingHyphen}#else${controllerDomain}#end")
     #if(${superControllerClass})
             public class ${table.controllerName} extends ${superControllerClass} {
