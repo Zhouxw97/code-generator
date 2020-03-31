@@ -45,7 +45,6 @@ import ${cfg.packageDto}.${domainName};
  * @since ${date}
  */
 public class ${table.controllerName}Test extends BaseTest {
-    //日志对象
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String mockUrlPrefix = "#if(${cfg.moduleName})/${cfg.moduleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${controllerDomain}#end";

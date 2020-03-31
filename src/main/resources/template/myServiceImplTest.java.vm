@@ -36,7 +36,6 @@ import java.util.List;
  * @since ${date}
  */
 public class ${table.serviceImplName}Test extends BaseTest {
-    //日志对象
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
