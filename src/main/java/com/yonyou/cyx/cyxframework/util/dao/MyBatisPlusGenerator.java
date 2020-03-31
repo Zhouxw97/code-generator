@@ -1,20 +1,13 @@
-/**
- * Copyright (c) 2011-2016, hubin (jobob@qq.com).
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.yonyou.cyx.cyxframework.util.dao;
 
+import com.yonyou.cyx.function.utils.CodeFormater;
+import com.yonyou.cyx.function.utils.FileUtil;
+import com.yonyou.cyx.function.utils.common.CommonUtils;
+import com.yonyou.cyx.function.utils.common.StringUtils;
+import com.yonyou.cyx.function.utils.resource.YamlUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -37,7 +30,9 @@ public class MyBatisPlusGenerator {
      * @author zhangxianchao
      * @since 2018/7/28 0028
      */
-    public static void generate(Properties properties) {
+    public static void generate() {
+        Properties properties = YamlUtils.yaml2Properties("generator.yaml");
+
         String superEntityClass = properties.getProperty("output.superEntityClass");
         String superMapperClass = properties.getProperty("output.superMapperClass");
         String superControllerClass = properties.getProperty("output.superControllerClass");
@@ -59,5 +54,23 @@ public class MyBatisPlusGenerator {
         config.setVersionFieldName(versionFieldName);
         //执行代码生成
         MyBatisPlusCommonGenerator.generate(config, properties);
+
+        String codeFormat = properties.getProperty("output.codeFormat");
+        boolean format = false;
+        if (!StringUtils.isBlank(codeFormat) && "true".equals(codeFormat)) {
+            format = true;
+        }
+
+        if(format){
+            //获取代码生成路径
+            String outputPath = properties.getProperty("output.path") + "/src";
+
+            //格式化代码生成路径中的文件
+            CodeFormater codeFormater = new CodeFormater();
+            List<String> fileList = FileUtil.getFileList(outputPath, new ArrayList<>());
+            if (!CommonUtils.isNullOrEmpty(fileList)) {
+                fileList.forEach(r -> codeFormater.formatFile(r));
+            }
+        }
     }
 }
