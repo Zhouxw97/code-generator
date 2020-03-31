@@ -36,15 +36,14 @@ public class ${entity} extends Model<${entity}> {
 #else
 public class ${entity} implements Serializable{
 #end
-
     private static final long serialVersionUID=1L;
+
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
     #if(${field.keyFlag})
         #set($keyPropertyName=${field.propertyName})
     #end
 #if("$!field.comment" != "")
-
     /**
      * ${field.comment}
      */
@@ -78,6 +77,7 @@ public class ${entity} implements Serializable{
     @TableLogic
     #end
 private ${field.propertyType} ${field.propertyName};
+
 #end
 
     public ${entity}(){

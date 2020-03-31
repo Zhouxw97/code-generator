@@ -34,7 +34,6 @@ public class ${domainName}Dto extends ${baseDto} implements Serializable {
 ## ----------  BEGIN 字段循环遍历  ----------
     #foreach($field in ${table.fields})
     #if("$!field.comment" != "")
-
     /**
      * ${field.comment}
      */
@@ -44,9 +43,11 @@ public class ${domainName}Dto extends ${baseDto} implements Serializable {
     @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
     @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}")
     private ${field.propertyType} ${field.propertyName};
+
         #else
     @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}")
     private ${field.propertyType} ${field.propertyName};
+
         #end
     #end
 
