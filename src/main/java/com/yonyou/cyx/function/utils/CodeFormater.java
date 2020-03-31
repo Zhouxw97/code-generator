@@ -46,7 +46,7 @@ public class CodeFormater {
     private void init() {
         fileEncoding = "UTF-8";
         lineSeparator = System.getProperty("line.separator");
-        options = DefaultCodeFormatterConstants.getEclipseDefaultSettings();
+        options = DefaultCodeFormatterConstants.getEclipse21Settings();
 
         // initialize the compiler settings to be able to format 1.6 code
         options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
