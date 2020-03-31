@@ -244,7 +244,7 @@ public class MyBatisPlusCommonGenerator {
                         // 自定义文件命名，注意 %s 会自动填充表实体属性！
                         .setMapperName("%sMapper")
                         .setXmlName("%sMapper")
-                        .setEntityName("%sPO")
+                        .setEntityName("%sPo")
                         .setServiceName("%sService")
                         .setServiceImplName("%sServiceImpl")
                         .setControllerName("%sController")
@@ -365,7 +365,7 @@ public class MyBatisPlusCommonGenerator {
             public String outputFile(TableInfo tableInfo) {
                 return path + "/src/main/resources/" + mapperXmlPackageStatic.replaceAll("\\.", "/") + "/"
                         + (StringUtils.isBlank(moduleName) ? "" : (getModuleNameDir(moduleName) + "/"))
-                        + StringUtils.firstCharToLowerCase(tableInfo.getEntityName()).replace("PO", "")
+                        + StringUtils.firstCharToLowerCase(tableInfo.getEntityName()).replace("Po", "")
                         + "Mapper.xml";
             }
         };
@@ -407,7 +407,7 @@ public class MyBatisPlusCommonGenerator {
                 return path + "/src/main/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
                         "/" + dtoPackageStatic.replaceAll("\\.", "/")
                         + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
-                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "DTO.java";
+                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "Dto.java";
             }
         };
 
@@ -448,7 +448,7 @@ public class MyBatisPlusCommonGenerator {
                 return path + "/src/main/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
                         "/" + dtoPackageStatic.replaceAll("\\.", "/")
                         + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
-                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "QueryDTO.java";
+                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "QueryDto.java";
             }
         };
 

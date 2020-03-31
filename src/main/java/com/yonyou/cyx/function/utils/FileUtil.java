@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @description:
+ * @description: 获取路径下文件列表
  * @author: lijun
  * @create: 2020-03-19 13:00:14
  **/
@@ -23,7 +23,6 @@ public class FileUtil {
                 } else {
                     String strFileName = files[i].getAbsolutePath();
                     if (strFileName.endsWith(".java") || strFileName.endsWith("Mapper.xml")) {
-                        System.out.println("---" + strFileName);
                         fileList.add(strFileName);
                     }
                 }

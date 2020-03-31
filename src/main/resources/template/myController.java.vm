@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
     #end
     #set($domainName=$!{entity})
     #set($end=$domainName.length() - 2)
-    #set($domainName=$domainName.substring(0,$end)+"DTO" )
-    #set($domainQueryName=$domainName.substring(0,$end)+"QueryDTO" )
+    #set($domainName=$domainName.substring(0,$end)+"Dto" )
+    #set($domainQueryName=$domainName.substring(0,$end)+"QueryDto" )
     #set($dtoPackage=$!{package.Entity})
     #set($dtoPackage=$dtoPackage.replace("entity","dto" ))
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,8 +36,8 @@ import javax.validation.constraints.NotNull;
 #set($domainName=$!{entity})
 #set($end = $domainName.length() - 2)
 #set($controllerDomain=$domainName.substring(0,$end))
-#set($domainName=$domainName.substring(0,$end)+"DTO" )
-#set($domainQueryName=$domainName.substring(0,$end)+"QueryDTO" )
+#set($domainName=$domainName.substring(0,$end)+"Dto" )
+#set($domainQueryName=$domainName.substring(0,$end)+"QueryDto" )
 
 #set ($camelDtoName = $!{domainName})
 #set ($camelDtoName = $camelDtoName.substring(0,1).toLowerCase() + $camelDtoName.substring(1,$camelDtoName.length()))
@@ -124,7 +124,7 @@ public ${domainName} getById(@PathVariable("id") @NotNull(message = "id不能为
 /**
  * 新增数据
  *
- * @param ${camelDtoName} 需要保存的DTO
+ * @param ${camelDtoName} 需要保存的Dto
  * @return int
  * @author ${author}
  * @since ${date}
@@ -144,7 +144,7 @@ public int insert(@Valid @RequestBody ${domainName} ${camelDtoName}){
  * 根据ID修改数据
  *
  * @param id 需要修改数据的ID
- * @param ${camelDtoName} 需要保存的DTO
+ * @param ${camelDtoName} 需要保存的Dto
  * @return int
  * @author ${author}
  * @since ${date}

@@ -21,7 +21,7 @@ import java.util.Map;
 
     #set($domainName=$!{entity})
     #set($end=$domainName.length() - 2)
-    #set($domainName=$domainName.substring(0,$end)+"DTO" )
+    #set($domainName=$domainName.substring(0,$end)+"Dto" )
     #set($controllerDomain=$domainName.substring(0,$end))
     #set($dtoPackage=$!{package.Entity})
     #set($dtoPackage=$dtoPackage.replace("entity","dto" ))

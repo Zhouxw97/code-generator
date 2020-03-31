@@ -36,7 +36,7 @@ public class CodeFormater {
     public CodeFormater(String fileEncoding) {
         init();
         this.fileEncoding = fileEncoding;
-        this.lineSeparator =  System.getProperty("line.separator");
+        this.lineSeparator = System.getProperty("line.separator");
     }
 
     public CodeFormater() {
@@ -45,7 +45,7 @@ public class CodeFormater {
 
     private void init() {
         fileEncoding = "UTF-8";
-        lineSeparator =  System.getProperty("line.separator");
+        lineSeparator = System.getProperty("line.separator");
         options = DefaultCodeFormatterConstants.getEclipseDefaultSettings();
 
         // initialize the compiler settings to be able to format 1.6 code
@@ -69,7 +69,7 @@ public class CodeFormater {
      *
      * @param sourceFileName
      */
-    public void formatFile(String sourceFileName) {
+    public void formatFile(String sourceFileName, boolean formatJava, boolean xmlFormat) {
         BufferedReader in = null;
         BufferedWriter out = null;
         try {
@@ -88,9 +88,9 @@ public class CodeFormater {
 
             String output = contents;
 
-            if (sourceFileName.endsWith(".java")) {
+            if (sourceFileName.endsWith(".java") && formatJava) {
                 output = getJavaFormatStr(contents);
-            } else if (sourceFileName.endsWith(".xml")) {
+            } else if (sourceFileName.endsWith(".xml") && xmlFormat) {
                 output = getXmlFormatStr(contents);
             }
 

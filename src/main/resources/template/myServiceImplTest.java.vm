@@ -14,7 +14,7 @@ import java.util.List;
 #set($domainName=$!{entity})
 #set($end = $domainName.length() - 2)
 #set($controllerDomain=$domainName.substring(0,$end))
-#set($domainName=$domainName.substring(0,$end)+"DTO")
+#set($domainName=$domainName.substring(0,$end)+"Dto")
 
 
 #set ($camelDtoName = $!{domainName})

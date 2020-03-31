@@ -55,22 +55,19 @@ public class MyBatisPlusGenerator {
         //执行代码生成
         MyBatisPlusCommonGenerator.generate(config, properties);
 
-        String codeFormat = properties.getProperty("output.codeFormat");
-        boolean format = false;
-        if (!StringUtils.isBlank(codeFormat) && "true".equals(codeFormat)) {
-            format = true;
-        }
+        String javaFormat = properties.getProperty("output.javaFormat");
+        String xmlFormat = properties.getProperty("output.xmlFormat");
+        boolean jf = !StringUtils.isBlank(javaFormat) && "true".equals(javaFormat);
+        boolean xf = !StringUtils.isBlank(xmlFormat) && "true".equals(xmlFormat);
 
-        if(format){
-            //获取代码生成路径
-            String outputPath = properties.getProperty("output.path") + "/src";
+        //获取代码生成路径
+        String outputPath = properties.getProperty("output.path") + "/src";
 
-            //格式化代码生成路径中的文件
-            CodeFormater codeFormater = new CodeFormater();
-            List<String> fileList = FileUtil.getFileList(outputPath, new ArrayList<>());
-            if (!CommonUtils.isNullOrEmpty(fileList)) {
-                fileList.forEach(r -> codeFormater.formatFile(r));
-            }
+        //格式化代码生成路径中的文件
+        CodeFormater codeFormater = new CodeFormater();
+        List<String> fileList = FileUtil.getFileList(outputPath, new ArrayList<>());
+        if (!CommonUtils.isNullOrEmpty(fileList)) {
+            fileList.forEach(r -> codeFormater.formatFile(r, jf, xf));
         }
     }
 }

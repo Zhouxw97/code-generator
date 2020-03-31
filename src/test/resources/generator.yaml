@@ -29,7 +29,8 @@ output:
   logicDeleteFieldName: IS_DELETED
   versionFieldName: RECORD_VERSION
   superEntityColumns: CREATED_BY,CREATED_TIME,UPDATED_BY,UPDATED_TIME,RECORD_VERSION,created_by,created_time,updated_by,updated_time,record_version
-  codeFormat: true #是否格式化代码
+  javaFormat: true #是否格式化*.java
+  xmlFormat: false #是否格式化*Mapper.xml，依赖网络，可能会报错，但没影响
 
 
 

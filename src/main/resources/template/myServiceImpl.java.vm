@@ -1,7 +1,7 @@
 package ${package.ServiceImpl};
     #set($domainName=$!{entity})
     #set($end= $domainName.length() - 2)
-    #set($domainName=$domainName.substring(0,$end)+"DTO")
+    #set($domainName=$domainName.substring(0,$end)+"Dto")
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

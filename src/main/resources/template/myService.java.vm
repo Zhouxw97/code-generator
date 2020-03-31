@@ -2,7 +2,7 @@ package ${package.Service};
 
     #set($domainName=$!{entity})
     #set($end=$domainName.length() - 2)
-    #set($domainName=$domainName.substring(0,$end)+"DTO" )
+    #set($domainName=$domainName.substring(0,$end)+"Dto" )
 import com.yonyou.cyx.framework.service.base.IBaseService;
 import ${package.Entity}.${entity};
 import ${cfg.packageDto}.${domainName};
