@@ -114,7 +114,9 @@ public class MyBatisPlusCommonGenerator {
         mpg.setPackageInfo(packageConfig);
 
         String dtoPackage = properties.getProperty("output.defineChildPackage.dto");
+        String voPackage = properties.getProperty("output.defineChildPackage.vo");
         final String dtoPackageStatic = dtoPackage == null ? "bean.dto" : dtoPackage;
+        final String voPackageStatic = voPackage == null ? "bean.vo" : voPackage;
         InjectionConfig injectionConfig = new InjectionConfig() {
             /**
              * 注入自定义 Map 对象
@@ -127,6 +129,9 @@ public class MyBatisPlusCommonGenerator {
                 map.put("packageDto", packageName + (mpg.getPackageInfo().getModuleName()
                         == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
                         + dtoPackageStatic + moduleName2);
+                map.put("packageVo", packageName + (mpg.getPackageInfo().getModuleName()
+                        == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
+                        + voPackageStatic + moduleName2);
                 map.put("packageServiceImplTest", packageName + (mpg.getPackageInfo().getModuleName()
                         == null ? "" : "." + mpg.getPackageInfo().getModuleName()) + "."
                         + servicePackageStatic + moduleName2);
@@ -142,8 +147,8 @@ public class MyBatisPlusCommonGenerator {
         setXmlOutPutConfig(properties, fileOutConfigs);
         //进行DTO 输出配置
         setDtoOutPutConfig(properties, fileOutConfigs, mpg);
-        //进行QueryDTO 输出配置
-        setQueryDtoOutPutConfig(properties, fileOutConfigs, mpg);
+        //进行QueryVo 输出配置
+        setQueryVoOutPutConfig(properties, fileOutConfigs, mpg);
         //进行ControllerTest 输出配置
         setControllerTestConfig(properties, fileOutConfigs, mpg);
         //进行ServiceTest 输出配置
@@ -426,10 +431,10 @@ public class MyBatisPlusCommonGenerator {
      * @author zhangxianchao
      * @since 2018/10/8 0008
      */
-    private static void setQueryDtoOutPutConfig(Properties properties, List<FileOutConfig> fileOutConfigs, AutoGenerator
+    private static void setQueryVoOutPutConfig(Properties properties, List<FileOutConfig> fileOutConfigs, AutoGenerator
             mpg) {
-        String dtoPackage = properties.getProperty("output.defineChildPackage.dto");
-        final String dtoPackageStatic = dtoPackage == null ? "bean.dto" : dtoPackage;
+        String dtoPackage = properties.getProperty("output.defineChildPackage.vo");
+        final String dtoPackageStatic = dtoPackage == null ? "bean.vo" : dtoPackage;
 
         String moduleName = properties.getProperty(OUTPUT_MODULE_NAME);
         //文件路径
@@ -437,7 +442,7 @@ public class MyBatisPlusCommonGenerator {
         File file = new File(outputPath);
         String path = file.getAbsolutePath();
 
-        FileOutConfig dtoFileConfig = new FileOutConfig("/template/myQueryDto" + JAVA_VM_SUFFIX) {
+        FileOutConfig dtoFileConfig = new FileOutConfig("/template/myQueryVo" + JAVA_VM_SUFFIX) {
             /**
              * 输出文件
              *
@@ -448,11 +453,11 @@ public class MyBatisPlusCommonGenerator {
                 return path + "/src/main/java/" + mpg.getPackageInfo().getParent().replaceAll("\\.", "/") +
                         "/" + dtoPackageStatic.replaceAll("\\.", "/")
                         + (StringUtils.isBlank(moduleName) ? "" : "/" + getModuleNameDir(moduleName)) + "/"
-                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "QueryDto.java";
+                        + tableInfo.getEntityName().substring(0, tableInfo.getEntityName().length() - 2) + "QueryVo.java";
             }
         };
 
-        String isDtoGenerate = properties.getProperty("output.isGeneratePackage.dto");
+        String isDtoGenerate = properties.getProperty("output.isGeneratePackage.vo");
         if (StringUtils.isNullOrEmpty(isDtoGenerate) || isDtoGenerate.equals("true")) {
             fileOutConfigs.add(dtoFileConfig);
         }
