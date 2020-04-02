@@ -172,7 +172,7 @@ public int update(@Valid @RequestBody ${domainName} ${camelDtoName},
  * @since ${date}
  */
 @ApiOperation(value = "根据ID删除数据")
-@ApiImplicitParam(name = "id" , value = "ID" , dataType = "${keyPropertyType}" , paramType = "path")
+@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path")
     #if(${restControllerStyle})
     #else
     @ResponseBody
@@ -190,7 +190,7 @@ public int deleteById(@PathVariable("id") @NotNull(message = "id不能为空") $
  * @since ${date}
  */
 @ApiOperation(value = "根据ID批量删除数据")
-@ApiImplicitParam(name = "ids" , value = "IDs" , dataType = "String" , paramType = "path")
+@ApiImplicitParam(name = "ids" , value = "ids" , dataType = "String" , paramType = "path")
     #if(${restControllerStyle})
     #else
     @ResponseBody

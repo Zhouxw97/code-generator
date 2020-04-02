@@ -113,7 +113,7 @@ public class ${table.controllerName}Test extends BaseTest {
             #end
         #end
 
-        String responseString = MockTestUtil.postUrlMock(mvc, mockUrlPrefix,${camelDtoName});
+        String responseString = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix, HttpMethod.POST,${camelDtoName}, null, null);
         logger.debug("responseString:" + responseString);
     }
 
@@ -140,8 +140,7 @@ public class ${table.controllerName}Test extends BaseTest {
         Map<String, Object> testData = ${camelDtoName}.toMaps();
         Object ${keyPropertyName} = testData.get("${keyPropertyName}");
 
-        String responseString = MockTestUtil.putUrlMock(mvc, mockUrlPrefix + "/" + ${keyPropertyName}.toString(),
-            ${camelDtoName});
+        String responseString = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix + "/" + ${keyPropertyName}.toString(), HttpMethod.PUT,${camelDtoName}, null, null);
         logger.debug("responseString:" + responseString);
     }
 
@@ -158,12 +157,11 @@ public class ${table.controllerName}Test extends BaseTest {
         Object ${keyPropertyName} = testData.get("${keyPropertyName}");
 
         //删除数据库中的一个ID
-        String responseString = MockTestUtil.deleteUrlMock(mvc, mockUrlPrefix + "/" + ${keyPropertyName}, null);
+        String responseString = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix + "/" + ${keyPropertyName}, HttpMethod.DELETE, null, null, null);
         logger.debug("responseString:" + responseString);
 
         //删除数据库中不存在的ID
-        String deleteFailure = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix + "/-1" + ${keyPropertyName}, HttpMethod
-                .DELETE, null, null, null);
+        String deleteFailure = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix + "/-1" + ${keyPropertyName}, HttpMethod.DELETE, null, null, null);
         logger.debug("deleteFailure:" + deleteFailure);
         RestResultResponse responsePage = JSONUtil.jsonToObj(deleteFailure, new
                 TypeReference<RestResultResponse>() {
@@ -186,7 +184,7 @@ public class ${table.controllerName}Test extends BaseTest {
         }
 
         //删除数据库中的多条数据
-        String responseString = MockTestUtil.deleteUrlMock(mvc, mockUrlPrefix + "/batch/" + String.join(",", ${keyPropertyName}List), null);
+        String responseString = MockTestUtil.mockUrlWithMethod(mvc, mockUrlPrefix + "/batch/" + String.join(",", ${keyPropertyName}List), HttpMethod.DELETE, null, null, null);
         logger.debug("responseString:" + responseString);
 
 
