@@ -1,4 +1,4 @@
-package ${cfg.packageVo};
+package ${cfg.packageDto};
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
     #set($dtoEnd=$superDtoClass.length())
     #set($baseDto=$superDtoClass.substring($dtoBegin,$dtoEnd))
 
-public class ${domainName}QueryVo extends ${baseDto} implements Serializable {
+public class ${domainName}QueryDto extends ${baseDto} implements Serializable {
     private static final long serialVersionUID = 1L;
 
 ## ----------  BEGIN 字段循环遍历  ----------
@@ -52,7 +52,7 @@ public class ${domainName}QueryVo extends ${baseDto} implements Serializable {
         #end
     #end
 
-    public ${domainName}QueryVo() {
+    public ${domainName}QueryDto() {
         super();
     }
 ## ----------  END 字段循环遍历  ----------
@@ -85,7 +85,7 @@ public class ${domainName}QueryVo extends ${baseDto} implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("${domainName}QueryVo{")
+        sb.append("${domainName}QueryDto{")
             #foreach($field in ${table.fields})
                 #if($!{velocityCount}==1)
                         .append("${field.propertyName}=").append(${field.propertyName})

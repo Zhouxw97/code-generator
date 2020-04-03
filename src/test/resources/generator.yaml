@@ -18,7 +18,6 @@ output:
     service: service
     serviceImpl: impl
     dto: entity.dto
-    vo: entity.vo
     controllerTest: controller
     mapperXml: mybatis.mapper
     entity: entity.po

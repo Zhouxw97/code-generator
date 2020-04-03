@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
     #set($domainName=$!{entity})
     #set($end=$domainName.length() - 2)
     #set($domainName=$domainName.substring(0,$end)+"Dto" )
-    #set($domainQueryName=$domainName.substring(0,$end)+"QueryVo" )
+    #set($domainQueryName=$domainName.substring(0,$end)+"QueryDto" )
     #set($dtoPackage=$!{package.Entity})
     #set($dtoPackage=$dtoPackage.replace("entity","dto" ))
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Service}.${table.serviceName};
 import ${cfg.packageDto}.${domainName};
-import ${cfg.packageVo}.${domainQueryName};
+import ${cfg.packageDto}.${domainQueryName};
 import ${package.Entity}.${entity};
 
 import javax.validation.Valid;
@@ -37,7 +37,7 @@ import javax.validation.constraints.NotNull;
 #set($end = $domainName.length() - 2)
 #set($controllerDomain=$domainName.substring(0,$end))
 #set($domainName=$domainName.substring(0,$end)+"Dto" )
-#set($domainQueryName=$domainName.substring(0,$end)+"QueryVo" )
+#set($domainQueryName=$domainName.substring(0,$end)+"QueryDto" )
 
 #set ($camelDtoName = $!{domainName})
 #set ($camelDtoName = $camelDtoName.substring(0,1).toLowerCase() + $camelDtoName.substring(1,$camelDtoName.length()))
@@ -111,7 +111,7 @@ import javax.validation.constraints.NotNull;
  * @since ${date}
  */
 @ApiOperation(value = "根据ID获取数据")
-@ApiImplicitParam(name = "id" , value = "ID" , dataType = "${keyPropertyType}" , paramType = "path")
+@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path")
     #if(${restControllerStyle})
     #else
     @ResponseBody
@@ -151,7 +151,7 @@ public int insert(@Valid @RequestBody ${domainName} ${camelDtoName}){
  */
 @ApiOperation(value = "根据ID修改数据")
 @ApiImplicitParams({
-        @ApiImplicitParam(name = "id" , value = "ID" , dataType = "${keyPropertyType}" , paramType = "path"),
+        @ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path"),
         @ApiImplicitParam(name = "${camelDtoName}" , value = "请求体" , dataType = "${domainName}" , paramType = "body")
 })
     #if(${restControllerStyle})
