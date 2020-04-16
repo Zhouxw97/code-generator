@@ -250,39 +250,39 @@ public class MyBatisPlusCommonGenerator {
                         .setControllerName("%sController")
         );
 
-        mpg.setStrategy(
-                // 策略配置
-                new StrategyConfig()
-                        // 此处可以修改为您的表前缀
-                        .setTablePrefix(prefixes)
-                        // 表名生成策略
-                        .setNaming(NamingStrategy.underline_to_camel)
-                        // 需要生成的表
-                        .setInclude(tables)
-                        .setRestControllerStyle(true)
-                        //.setExclude(new String[]{"test"}) // 排除生成的表
-                        // 自定义实体父类
-                        // .setSuperEntityClass("com.baomidou.demo.TestEntity")
-                        // 自定义实体，公共字段
-                        .setSuperEntityColumns(customConfig.getSuperEntityColumns())
+        // 策略配置
+        StrategyConfig strategyConfig = new StrategyConfig()
+                // 此处可以修改为您的表前缀
+                .setTablePrefix(prefixes)
+                // 表名生成策略
+                .setNaming(NamingStrategy.underline_to_camel)
+                // 需要生成的表
+                .setInclude(tables)
+                .setRestControllerStyle(true)
+                //.setExclude(new String[]{"test"}) // 排除生成的表
+                // 自定义实体父类
+                // .setSuperEntityClass("com.baomidou.demo.TestEntity")
+                // 自定义实体，公共字段
+                .setSuperEntityColumns(customConfig.getSuperEntityColumns())
 //                        .setSuperEntityColumns(new String[]{"createdBy", "createdTime", "updatedBy",
 //                                "updatedTime", "recordVersion"})
-                        .setTableFillList(null)
-                        .setSuperEntityClass(customConfig.getSuperEntityClass())
-                        // 自定义 mapper 父类
-                        .setSuperMapperClass(customConfig.getSuperMapperClass())
-                        // 自定义 service 父类
-                        // .setSuperServiceClass("com.baomidou.demo.TestService")
-                        // 自定义 service 实现类父类
-                        // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
-                        // 自定义 controller 父类
-                        .setSuperControllerClass(customConfig.getSuperControllerClass())
-                        .setEntityBooleanColumnRemoveIsPrefix(customConfig.isEntityBooleanColumnRemoveIsPrefix())
-                        .setLogicDeleteFieldName(customConfig.getLogicDeleteFieldName())
-                        .setVersionFieldName(customConfig.getLogicDeleteFieldName())
-                // .setRestControllerStyle(true)
-                // .setControllerMappingHyphenStyle(true)
-        );
+                .setTableFillList(null)
+                .setSuperEntityClass(customConfig.getSuperEntityClass())
+                // 自定义 mapper 父类
+                .setSuperMapperClass(customConfig.getSuperMapperClass())
+                // 自定义 service 父类
+                // .setSuperServiceClass("com.baomidou.demo.TestService")
+                // 自定义 service 实现类父类
+                // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
+                .setEntityBooleanColumnRemoveIsPrefix(customConfig.isEntityBooleanColumnRemoveIsPrefix())
+                .setLogicDeleteFieldName(customConfig.getLogicDeleteFieldName())
+                .setVersionFieldName(customConfig.getLogicDeleteFieldName());
+        // 自定义 controller 父类
+        strategyConfig.setSuperControllerClass(customConfig.getSuperControllerClass());
+        // .setRestControllerStyle(true)
+        // .setControllerMappingHyphenStyle(true)
+
+        mpg.setStrategy(strategyConfig);
     }
 
     /**

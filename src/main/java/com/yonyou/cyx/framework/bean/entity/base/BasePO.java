@@ -13,7 +13,7 @@ import java.util.Map;
  * @author zhangxianchao
  * @since 2018/7/22 0022
  */
-public abstract class BasePO<T extends Model> extends Model<T> {
+public abstract class BasePO<T extends Model> extends Model {
 
     @Override
     protected Serializable pkVal() {
