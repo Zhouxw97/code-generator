@@ -1,6 +1,6 @@
 package com.yonyou.cyx.generator;
 
-import com.yonyou.cyx.cyxframework.util.dao.MyBatisPlusGenerator;
+import com.yonyou.cyx.util.MyBatisPlusGenerator;
 
 /**
  * 用于代码生成

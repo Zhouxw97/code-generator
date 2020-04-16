@@ -3,7 +3,7 @@ package ${package.Service};
     #set($domainName=$!{entity})
     #set($end=$domainName.length() - 2)
     #set($domainName=$domainName.substring(0,$end)+"Dto" )
-import com.yonyou.cyx.framework.service.base.IBaseService;
+import ${cfg.superServiceClass};
 import ${package.Entity}.${entity};
 import ${cfg.packageDto}.${domainName};
 
@@ -13,6 +13,12 @@ import ${cfg.packageDto}.${domainName};
         #set($keyPropertyType=${field.propertyType})
     #end
 #end
+
+#set($superServiceClass=$cfg.superServiceClass)
+#set($serviceBegin=$superServiceClass.lastIndexOf('.')+1)
+#set($serviceEnd=$superServiceClass.length())
+#set($baseService=$superServiceClass.substring($serviceBegin,$serviceEnd))
+
 /**
  * $!{table.comment} 服务类
  *
@@ -22,7 +28,7 @@ import ${cfg.packageDto}.${domainName};
 #if(${kotlin})
 interface ${table.serviceName} :${superServiceClass}<${entity}>
 #else
-public interface ${table.serviceName} extends IBaseService<${domainName},${entity},${keyPropertyType}> {
+public interface ${table.serviceName} extends ${baseService}<${domainName},${entity},${keyPropertyType}> {
 
 }
 #end

@@ -1,4 +1,4 @@
-package com.yonyou.cyx.cyxframework.util.dao;
+package com.yonyou.cyx.util;
 
 import com.yonyou.cyx.function.utils.CodeFormater;
 import com.yonyou.cyx.function.utils.FileUtil;

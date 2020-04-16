@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.yonyou.cyx.cyxframework.util.dao;
+package com.yonyou.cyx.util;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -94,6 +94,7 @@ public class MyBatisPlusCommonGenerator {
         String serviceImplPackageStatic = serviceImplPackage == null ? "impl" : serviceImplPackage;
 
         String superDtoClass = properties.getProperty("output.superDtoClass");
+        String superServiceClass = properties.getProperty("output.superServiceClass");
 
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
@@ -134,6 +135,7 @@ public class MyBatisPlusCommonGenerator {
                         + servicePackageStatic + moduleName2);
 
                 map.put("superDtoClass", superDtoClass);
+                map.put("superServiceClass", superServiceClass);
 
                 this.setMap(map);
             }

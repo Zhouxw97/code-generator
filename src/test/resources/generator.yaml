@@ -23,9 +23,10 @@ output:
     entity: entity.po
   moduleName:  #模块名称,可为空
   superControllerClass: com.yonyou.cyx.framework.controller.base.BaseController
+  superServiceClass: com.yonyou.cyx.framework.service.base.IBaseService
+  superMapperClass: com.yonyou.cyx.framework.dao.base.IMapper
   superEntityClass: com.yonyou.cyxdms.framework.bean.entity.base.DMSBasePO
   superDtoClass: com.yonyou.cyxdms.framework.bean.dto.base.DMSBaseDTO
-  superMapperClass: com.yonyou.cyx.framework.dao.base.IMapper
   logicDeleteFieldName: IS_DELETED
   versionFieldName: RECORD_VERSION
   superEntityColumns: CREATED_BY,CREATED_TIME,UPDATED_BY,UPDATED_TIME,RECORD_VERSION,created_by,created_time,updated_by,updated_time,record_version

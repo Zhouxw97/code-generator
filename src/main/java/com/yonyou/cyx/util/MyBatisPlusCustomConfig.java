@@ -1,4 +1,4 @@
-package com.yonyou.cyx.cyxframework.util.dao;
+package com.yonyou.cyx.util;
 
 /**
  * 设定生成Mybatis Plus 时的自定义属性
