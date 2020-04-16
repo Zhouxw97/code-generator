@@ -107,4 +107,24 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>public</name>
+            <layout>default</layout>
+            <url>http://nexuscyx.yycsy.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>public</name>
+            <url>http://nexuscyx.yycsy.com/repository/maven-public/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
