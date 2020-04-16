@@ -1,6 +1,6 @@
 db:
-  driverName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://10.180.6.111:3306/cyx_information?useSSL=false
+  driverName: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://10.180.6.110:3306/cyx_information?useSSL=false
   username: cyx
   password: cyx_Pass1234
 
