@@ -41,11 +41,11 @@ public class ${domainName}Dto extends ${baseDto} implements Serializable {
         #if(${field.propertyType.equals("LocalDateTime")})
     @JsonDeserialize(using = JsonLocalDateTimeDeserializer.class)
     @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
-    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}")
+    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "yyyy-MM-dd HH:mm:ss")
     private ${field.propertyType} ${field.propertyName};
 
         #else
-    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}")
+    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "#if(${field.propertyType.equals("Long")}|| ${field.propertyType.equals("long")} || ${field.propertyType.equals("Integer")} || ${field.propertyType.equals("int")})1#elseif(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})true#else${field.comment}#end")
     private ${field.propertyType} ${field.propertyName};
 
         #end
