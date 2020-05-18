@@ -111,7 +111,7 @@ import javax.validation.constraints.NotNull;
  * @since ${date}
  */
 @ApiOperation(value = "根据ID获取数据")
-@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1")
+@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1", required = true)
     #if(${restControllerStyle})
     #else
     @ResponseBody
@@ -151,7 +151,7 @@ public int insert(@Valid @RequestBody ${domainName} ${camelDtoName}){
  */
 @ApiOperation(value = "根据ID修改数据")
 @ApiImplicitParams({
-        @ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1"),
+        @ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1", required = true),
         @ApiImplicitParam(name = "${camelDtoName}" , value = "请求体" , dataType = "${domainName}" , paramType = "body")
 })
     #if(${restControllerStyle})
@@ -172,7 +172,7 @@ public int update(@Valid @RequestBody ${domainName} ${camelDtoName},
  * @since ${date}
  */
 @ApiOperation(value = "根据ID删除数据")
-@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1")
+@ApiImplicitParam(name = "id" , value = "id" , dataType = "${keyPropertyType}" , paramType = "path", example = "1", required = true)
     #if(${restControllerStyle})
     #else
     @ResponseBody
@@ -190,7 +190,7 @@ public int deleteById(@PathVariable("id") @NotNull(message = "id不能为空") $
  * @since ${date}
  */
 @ApiOperation(value = "根据ID批量删除数据")
-@ApiImplicitParam(name = "ids" , value = "ids" , dataType = "String" , paramType = "path", example = "1,2")
+@ApiImplicitParam(name = "ids" , value = "ids" , dataType = "String" , paramType = "path", example = "1,2", required = true)
     #if(${restControllerStyle})
     #else
     @ResponseBody

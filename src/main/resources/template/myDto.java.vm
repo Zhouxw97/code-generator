@@ -9,8 +9,10 @@ import com.yonyou.cyx.function.utils.jsonserializer.localdatetime.JsonLocalDateT
 import com.yonyou.cyx.function.utils.jsonserializer.localdatetime.JsonLocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 
 
 /**
@@ -27,10 +29,9 @@ import java.time.LocalDateTime;
     #set($dtoBegin=$superDtoClass.lastIndexOf('.')+1)
     #set($dtoEnd=$superDtoClass.length())
     #set($baseDto=$superDtoClass.substring($dtoBegin,$dtoEnd))
-
+    #set($columnDtoMap=$cfg.columnMap.get($table.name))
 public class ${domainName}Dto extends ${baseDto} implements Serializable {
     private static final long serialVersionUID = 1L;
-
 ## ----------  BEGIN 字段循环遍历  ----------
     #foreach($field in ${table.fields})
     #if("$!field.comment" != "")
@@ -38,14 +39,19 @@ public class ${domainName}Dto extends ${baseDto} implements Serializable {
      * ${field.comment}
      */
     #end
+        #set($required=${columnDtoMap.get($field.name).isNullable})
+        #set($maxLength=${columnDtoMap.get($field.name).maxLength})
         #if(${field.propertyType.equals("LocalDateTime")})
     @JsonDeserialize(using = JsonLocalDateTimeDeserializer.class)
     @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
-    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "yyyy-MM-dd HH:mm:ss", required = ${required} )
     private ${field.propertyType} ${field.propertyName};
 
         #else
-    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "#if(${field.propertyType.equals("Long")}|| ${field.propertyType.equals("long")} || ${field.propertyType.equals("Integer")} || ${field.propertyType.equals("int")})1#elseif(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})true#else${field.comment}#end")
+            #if($required && ${maxLength} > 0)
+            @Size(message = "${field.propertyName} 大于最大长度", max = ${maxLength})
+            #end
+    @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "#if(${field.propertyType.equals("Long")}|| ${field.propertyType.equals("long")} || ${field.propertyType.equals("Integer")} || ${field.propertyType.equals("int")})1#elseif(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})true#else${field.comment}#end", required = ${required})
     private ${field.propertyType} ${field.propertyName};
 
         #end

@@ -137,6 +137,49 @@ public class MyBatisPlusCommonGenerator {
                 map.put("superDtoClass", superDtoClass);
                 map.put("superServiceClass", superServiceClass);
 
+
+                Map<String, Map<String, Map<String, Object>>> columnMap = new HashMap<>(16);
+                try {
+                    DataSourceConfig dataSourceConfig = mpg.getDataSource();
+
+                    Class.forName(dataSourceConfig.getDriverName());
+                    Connection conn = DriverManager.getConnection(dataSourceConfig.getUrl(), dataSourceConfig.getUsername(), dataSourceConfig.getPassword());
+                    Statement statement = conn.createStatement();
+                    ResultSet rs = statement.executeQuery("SELECT table_name FROM information_schema.`TABLES` WHERE table_schema = (SELECT DATABASE());");
+
+                    List<String> tableList =new ArrayList<>();
+                    while (rs.next()) {
+                        String tb = rs.getString(1);
+                        tableList.add(tb);
+                    }
+                    rs.close();
+                    statement.close();
+
+                    for(String tableName : tableList){
+                        Statement smt = conn.createStatement();
+                        ResultSet rs2 = smt.executeQuery("SELECT COLUMN_NAME,IS_NULLABLE,CHARACTER_MAXIMUM_LENGTH FROM information_schema.`COLUMNS` WHERE TABLE_NAME = '" + tableName + "';");
+
+                        Map<String, Map<String, Object>> columnDtoMap = new HashMap<>(16);
+                        while (rs2.next()) {
+                            String columnName = rs2.getString(1);
+                            String isNullableStr = rs2.getString(2);
+
+                            Boolean isNullable = "NO".equalsIgnoreCase(isNullableStr);
+                            Long maxLength = rs2.getLong(3);
+
+                            HashMap<String, Object> column = new HashMap<>(16);
+                            column.put("isNullable", isNullable);
+                            column.put("maxLength", maxLength);
+                            columnDtoMap.put(columnName, column);
+                        }
+                        columnMap.put(tableName, columnDtoMap);
+                    }
+
+                    map.put("columnMap", columnMap);
+                } catch (Exception e) {
+                    logger.error("获取表名列表失败", e);
+                }
+
                 this.setMap(map);
             }
         };
