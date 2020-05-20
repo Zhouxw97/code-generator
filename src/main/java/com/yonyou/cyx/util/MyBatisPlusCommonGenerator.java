@@ -147,7 +147,7 @@ public class MyBatisPlusCommonGenerator {
                     Statement statement = conn.createStatement();
                     ResultSet rs = statement.executeQuery("SELECT table_name FROM information_schema.`TABLES` WHERE table_schema = (SELECT DATABASE());");
 
-                    List<String> tableList =new ArrayList<>();
+                    List<String> tableList = new ArrayList<>();
                     while (rs.next()) {
                         String tb = rs.getString(1);
                         tableList.add(tb);
@@ -155,17 +155,26 @@ public class MyBatisPlusCommonGenerator {
                     rs.close();
                     statement.close();
 
-                    for(String tableName : tableList){
+                    for (String tableName : tableList) {
                         Statement smt = conn.createStatement();
-                        ResultSet rs2 = smt.executeQuery("SELECT COLUMN_NAME,IS_NULLABLE,CHARACTER_MAXIMUM_LENGTH FROM information_schema.`COLUMNS` WHERE TABLE_NAME = '" + tableName + "';");
+                        ResultSet rs2 = smt.executeQuery("SHOW FULL FIELDS FROM " + tableName + ";");
 
                         Map<String, Map<String, Object>> columnDtoMap = new HashMap<>(16);
                         while (rs2.next()) {
                             String columnName = rs2.getString(1);
-                            String isNullableStr = rs2.getString(2);
+                            String isNullableStr = rs2.getString(4);
 
                             Boolean isNullable = "NO".equalsIgnoreCase(isNullableStr);
-                            Long maxLength = rs2.getLong(3);
+                            String type = rs2.getString(2);
+                            String tmp = "0";
+                            if (type.contains("(")) {
+                                tmp = type.substring(type.indexOf("(") + 1, type.indexOf(")"));
+                                if (tmp.contains(",")) {
+                                    tmp = tmp.substring(0, tmp.indexOf(","));
+                                }
+                            }
+
+                            Long maxLength = Long.valueOf(tmp);
 
                             HashMap<String, Object> column = new HashMap<>(16);
                             column.put("isNullable", isNullable);

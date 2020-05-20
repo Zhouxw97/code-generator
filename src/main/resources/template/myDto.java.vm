@@ -48,7 +48,7 @@ public class ${domainName}Dto extends ${baseDto} implements Serializable {
     private ${field.propertyType} ${field.propertyName};
 
         #else
-            #if($required && ${maxLength} > 0)
+            #if( ${maxLength} > 0)
             @Size(message = "${field.propertyName} 大于最大长度", max = ${maxLength})
             #end
     @ApiModelProperty(value = "${field.comment}" , name = "${field.propertyName}", example = "#if(${field.propertyType.equals("Long")}|| ${field.propertyType.equals("long")} || ${field.propertyType.equals("Integer")} || ${field.propertyType.equals("int")})1#elseif(${field.propertyType.equals("boolean")} || ${field.propertyType.equals("Boolean")})true#else${field.comment}#end", required = ${required})
