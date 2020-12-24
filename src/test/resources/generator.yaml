@@ -1,17 +1,17 @@
 db:
   driverName: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://10.180.6.110:3306/cyx_information?useSSL=false
-  username: cyx
-  password: cyx_Pass1234
+  url: jdbc:mysql://172.16.0.202:3306/cyx_esign
+  username: root
+  password: Root@1234
 
 table:
-  tableNames: tt_share #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
-  tablePrefix: tt_,tc_,tm_,tr_,f4_ #生成的文件名称去除前缀,可配置多个
+  tableNames: tm_auth_user #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
+  tablePrefix: tc_,tm #生成的文件名称去除前缀,可配置多个
 
 output:
-  path: C:\Users\Administrator\Desktop\www\information-service #输出目录
-  author: houkaihua #注释作者
-  packageName: com.yonyou.cyx.information.service
+  path: D:\WorkSpace\cyx-esign\esign-service #输出目录
+  author: Tanj #注释作者
+  packageName: com.yonyou.cyxdms.esign.service
   defineChildPackage:
     controller: controller
     mapper: dao
@@ -29,7 +29,7 @@ output:
   superDtoClass: com.yonyou.cyxdms.framework.bean.dto.base.DMSBaseDTO
   logicDeleteFieldName: IS_DELETED
   versionFieldName: RECORD_VERSION
-  superEntityColumns: CREATED_BY,CREATED_TIME,UPDATED_BY,UPDATED_TIME,RECORD_VERSION,created_by,created_time,updated_by,updated_time,record_version
+  superEntityColumns: CREATED_BY,CREATED_TIME,UPDATED_BY,UPDATED_TIME,RECORD_VERSION,created_by,created_time,updated_by,updated_time,record_version,IS_DELETED,CREATED_AT,UPDATED_AT
   javaFormat: true #是否格式化*.java
   xmlFormat: false #是否格式化*Mapper.xml，依赖网络，可能会报错，但没影响
 
