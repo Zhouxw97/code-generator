@@ -1,16 +1,16 @@
 db:
   driverName: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://172.16.0.202:3306/cyx_esign
+  url: jdbc:mysql://localhost:3306/crawler
   username: root
-  password: Root@1234
+  password: 123456
 
 table:
-  tableNames: tm_auth_user #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
-  tablePrefix: tc_,tm #生成的文件名称去除前缀,可配置多个
+  tableNames: item #生成的表名,可配置多张表；为空时生成整个数据库的表的代码
+#  tablePrefix: tc_,tm #生成的文件名称去除前缀,可配置多个
 
 output:
-  path: D:\WorkSpace\cyx-esign\esign-service #输出目录
-  author: Tanj #注释作者
+  path: /Library/IdeaProject #输出目录
+  author: zhouxiaowen #注释作者
   packageName: com.yonyou.cyxdms.esign.service
   defineChildPackage:
     controller: controller
